@@ -1,0 +1,192 @@
+vehiculo
+{
+  "_id": 1,
+  "id conductor",
+  "numeroDeSerie": "qwerty",
+  "anio": "2023",
+  "color": "negro",
+  "placas": "cvx",
+  "poliza": {
+    "fechaDeInicio": 03/12/2023,
+    "vigencia": "04/12/2023",
+    "precio": "1000"
+  }
+  "plan": {
+    "precio": 03/12/2023,
+    "duracion": "04/12/2023",
+    "caracteristicas": "total",
+  }
+}
+
+
+
+vehiculo 2
+{
+  "_id": 1,
+  "id_conductor": null,
+  "numeroDeSerie": "qwerty",
+  "anio": "2023",
+  "color": "negro",
+  "placas": "cvx",
+  "poliza": {
+    "tipo poliza": "completo",
+    "fechaDeInicio": "2023-12-03",
+    "fechaDeFin": "2023-12-04",
+    "precio": "1000",
+    "carectiristicas:""
+  }
+}
+
+
+
+conductor
+{
+  "_id":1,
+  "datps":nombre etc,
+
+}
+
+
+
+
+vehiculo
+{
+  "_id": 1,
+  "nombre": "Usuario 1",
+  "marca": "Usuario 1",
+  "modelo": "Usuario 1",
+  "polisa": {
+    "edad": 25,
+    "direccion": "Calle 123",
+    "telefono": "123-456-7890"
+    "tipo": "123-456-7890"
+  }
+}
+{
+  "_id": 1,
+  "nombre": "Usuario 1",
+  "detalles_id": 101
+}
+
+{
+  "_id": 101,
+  "edad": 25,
+  "direccion": "Calle 123",
+  "telefono": "123-456-7890"
+}
+
+
+-nombre:String
+-apellidoPaterno:String
+-apellidoMaterno:String
+-fechaNacimiento:Date
+-numeroLicencia:String
+-numeroTelefono:String
+-activo:boolean
+-email:String
+-password:String
+
+datos poliza
+-fechaDeInicio:Date
+-vigencia:Date
+-cobertura:String
+-precio:float
+
+datos vehiculo
+-numeroDeSerie:String
+-marca:String
+-modelo:String
+-anio:String
+-color:String
+ -placas:String
+-poliza:Poliza
+
+
+
+
+
+
+
+
+{
+  "_id": ObjectId("id_empleado"),
+  "nombre": "NombreEmpleado",
+  "apellidoPaterno": "ApellidoPaternoEmpleado",
+  "apellidoMaterno": "ApellidoMaternoEmpleado",
+  "fechaIngreso": "2023-12-02T12:00:00.000Z",
+  "activo": true,
+  "email": "empleado@dominio.com",
+  "password": "hashed_password",
+  "rol": "usuario",
+  "reportes": [
+    {
+      "fecha": "2023-12-02T09:00:00.000Z",
+      "tipo": "InformeDiario",
+      "descripcion": "Descripción del informe diario"
+    },
+    {
+      "fecha": "2023-12-01T14:30:00.000Z",
+      "tipo": "InformeSemanal",
+      "descripcion": "Descripción del informe semanal"
+    },
+    // ... más
+
+
+
+
+Json Reporte
+{
+  "_id": ObjectId("dsadsads"),
+  "_idVhiculo": ObjectId("dsadsa"),
+  "fechaDelSiniestro": "2023-12-02T09:00:00.000Z",
+  "fechaDeDictaminacion": "2023-12-02T09:00:00.000Z",
+  "descripcionDictamen": "Si aplica seguro",
+  "dictamen": "true",
+  "Ubicacion": "N123",
+  "tipo": "Robo de auto",
+  "descripcionDelSiniestro": " Estaba comprando agua",
+  "empleado": {
+    "_id": ObjectId("id_empleado"),
+    "nombre": "NombreEmpleado",
+    "apellidoPaterno": "ApellidoPaternoEmpleado",
+    "apellidoMaterno": "ApellidoMaternoEmpleado",
+    "fechaIngreso": "2023-12-02T12:00:00.000Z",
+    "activo": true,
+    "email": "empleado@dominio.com",
+    "password": "hashed_password",
+    "rol": "usuario"
+  }
+}
+
+
+vehiculo 2
+{
+  "_id": 1,
+  "id_conductor": 1,
+  "numeroDeSerie": "qwerty",
+  "anio": "2023",
+  "color": "negro",
+  "modelo": "tsuru",
+  "marca": "nissan",
+  "placa": "cvx",
+  "poliza": {
+    "tipo poliza": "completo",
+    "fechaDeInicio": "2023-12-03",
+    "fechaDeFin": "2023-12-04",
+    "precio": "1000",
+    "cobertura:"proteccion contra robos"
+  }
+}
+conductor
+{
+  "_id":1,
+  "nombre": "NombreEmpleado",
+  "apellidoPaterno": "ApellidoPaternoEmpleado",
+  "apellidoMaterno": "ApellidoMaternoEmpleado",
+  "numeroLincencia": "1232",
+  "numeroDeTelefono": "2282522839",
+  "activo": "true",
+  "email": ":zs20020854@estu",
+  "password": ":dasdas@estu",
+  "fechaDeNacimiento": "03/12/2023",
+}

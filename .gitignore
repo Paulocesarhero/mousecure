@@ -1,3 +1,78 @@
 .idea
 mongo-data
 venv
+conector.log
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+*.env
+
+# FastAPI
+__pycache__/
+.asgi_cache/
+.pytest_cache/
+
+# MongoDB
+*.log
+*.lock
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Package files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Distribution
+MANIFEST
+*.manifest
+*.spec
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Other
+*~
+*.swp
+*.bak
+*.tmp
+*.log
+*.tmp
+*.zip
+*.gz
+*.tar
+*.rar
+*.sql
+*.csv
+*.xlsx
+*.xls
+*.md

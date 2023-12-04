@@ -27,7 +27,7 @@ class Conector:
 
     def conectarBD(self) -> Database:
         try:
-            db = self._host.musicooldb
+            db = self._host.mousecuredb
             logging.info("Conexión a la bd exitosa.")
             return db
         except (AttributeError, OperationFailure) as e:

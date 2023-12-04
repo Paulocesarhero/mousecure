@@ -1,8 +1,17 @@
+# Modelos Pydantic
 from pydantic import BaseModel
 
 
+class Address(BaseModel):
+    street: str
+    city: str
+    state: str
+    zip_code: str
+
+
 class User(BaseModel):
-    username: str
-    password: str
-    telefono: str
-    rol: str
+    name: str
+    age: int
+    address: Address
+
+

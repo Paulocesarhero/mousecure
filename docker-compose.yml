@@ -43,4 +43,4 @@ services:
       - MONGO_HOST=mongodb
       - MONGO_PORT=27017
     volumes:
-      - ./Biblioteca:/app/Biblioteca
+      - .:/app

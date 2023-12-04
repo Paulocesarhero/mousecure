@@ -1,3 +1,4 @@
+from domain.reporte import Report
 import logging
 from domain.user import User
 from connection.mongo_conector import Conector
@@ -10,23 +11,20 @@ logging.basicConfig(
 )
 
 
-class UserDao:
+class ReporteDao:
     def __init__(self) -> None:
         try:
             self.db = Conector().conectarBD()
         except ConnectionError as e:
             logging.exception(f"Error al conectar a la base de datos: {e}")
 
-    def create_user_in_db(self, user: User) -> int:
+    def create_report_with_Employee(self, new_report: Report):
         try:
             data: Collection = self.db.users
-            user_dict = user.model_dump()
-            # Asegúrate de aplicar .model_dump() recursivamente a objetos anidados
-            user_dict["address"] = user.address.model_dump()
+            user_dict = new_report.model_dump()
+            user_dict["empleadoAsignado"] = new_report.empleadoAsignado.model_dump()
             data.insert_one(user_dict)
             return 0
         except Exception as e:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
             return -2
-
-
