@@ -39,7 +39,7 @@ async def create_report_employee(new_report: Report):
     dao = ReporteDao()
     result = dao.create_report_with_Employee(new_report)
     if result == 0:
-        return {"mensaje": f"Usuario creado: "}
+        return {"mensaje": f"Reporte creado: "}
     elif result == -1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario existente en la BD")
     else:
