@@ -86,21 +86,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         imagenesDialogoRespuesta[0],
                         "Solo soy un dialogo de respuesta, EXITO!: "+respuestaEjemplo,
                         "Un dialogo de respuesta para ver si si funciona el despliegue personalizado de dialogos de respuesta",
-                        "Gracias por participar");
+                        "Gracias por participar",
+                        false);
                     break;
                 case 2:
                     dispararDialogoResultado(
                         imagenesDialogoRespuesta[1],
                         "Solo soy un dialogo de respuesta, CUIDADO!: "+respuestaEjemplo,
                         "Un dialogo de respuesta para ver si si funciona el despliegue personalizado de dialogos de respuesta",
-                        "Gracias por participar");                        
+                        "Gracias por participar",
+                        false);                      
                     break;            
                 case 3:
                     dispararDialogoResultado(
                         imagenesDialogoRespuesta[2],
                         "Solo soy un dialogo de respuesta, ERROR!: "+respuestaEjemplo,
                         "Un dialogo de respuesta para ver si si funciona el despliegue personalizado de dialogos de respuesta",
-                        "Gracias por participar");                            
+                        "Gracias por participar",
+                        false);                            
                     break;        
                 default:                        
                     break;
@@ -110,8 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /*Las funciones deben de ser Asyn para poder realizar el proceso de:
     Mostrar Dialgo -> Usuario presiona aceptar Operacion -> Se muestra el dialogo de repesua en especifico*/
-    document.getElementById('btn_Cancelar').addEventListener('click', async function() {
-        const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("cerrar_Sesion");
+    document.getElementById('btn_Cancelar').addEventListener('click', function() {
+
+
+        dispararDialogoResultado(
+            imagenesDialogoRespuesta[0],//Escoge la imagen que se adecue a tu CU
+            "Solo soy un dialogo de respuesta, EXITO!: ",//Encabezado del errror
+            "Un dialogo de respuesta para ver si si funciona el despliegue personalizado de dialogos de respuesta",//Detalles del error
+            "Gracias por participar",
+            true);//Nompre del boton
+/*
+        const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("logOut");
         console.log("|5| Escucho evento desde reporteSiniestro.js");
         if (resultadoDialogo) {
             console.log("|6| Escucho evento desde reporteSiniestro.js");
@@ -119,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(respuestaEjemplo) ;
             switch (respuestaEjemplo) {
                 case 1:
-                    /**/
+                    
                     dispararDialogoResultado(
                         imagenesDialogoRespuesta[0],//Escoge la imagen que se adecue a tu CU
                         "Solo soy un dialogo de respuesta, EXITO!: "+respuestaEjemplo,//Encabezado del errror
@@ -143,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 default:                        
                     break;
             }
-        }
+        }*/
     });
 
 
@@ -157,14 +169,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /*Funciones para mostrar los dialogos respuestas y realizar una operacion si se confirma la operacion*/
     /*Con estas operaciones puedes disparar cuadros de dialogo y mostrar cuadros de repuestas*/
-    function dispararDialogoResultado(src,encabezado,contenido,boton) {
+    function dispararDialogoResultado(src,encabezado,contenido,boton,isAlerta) {
         console.log("|7| dispararDialogoResultado");
         var respuestaApi = new CustomEvent('respuestaApi', {
             detail : {
                 src: src,
                 encabezado: encabezado,
                 contenido: contenido,
-                boton: boton}
+                boton: boton,
+                alerta: isAlerta
+            }
         });
         document.dispatchEvent(respuestaApi);
     }

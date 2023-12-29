@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let dialogoRespuesta;
     let dialogoOperacion;
     let respuestaConfirmacion = false;
+    let isAlerta = false;
+
+
+
+
+
+
+
 
     /*Funcionalidad de los Cuadros de dialogo de tipo operacion (Aceptar y Cancelar)
     Estos pueden tener más opciones*/
@@ -18,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
             enfocarBotonesCuadroDialogo(false,dialogo);
         });
     });
+
+
+
+    
     /*Enviar que si se quiere realizar la accion*/
     function dispararEventoConfirmarOperacion(respuestaDialogo) {
         var enviarRespuestaDialogo = new CustomEvent('enviarRespuestaDialogo', {
@@ -32,12 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("|8| dispararDialogoResultado");
         dialogoRespuesta = CrearDialogoRespuesta(e.detail.src, e.detail.encabezado, e.detail.contenido,e.detail.boton);
         agregarEventoDialogoRespuesta (dialogoRespuesta);
-        dialogoOperacion.classList.add('dashOut');
+        isAlerta = e.detail.alerta;
+        if(isAlerta){
+            abrirDialogoModal();
+        }else{
+            dialogoOperacion.classList.add('dashOut');
+        }
         /*Formato para que cualquier boton pueda cerrar Cuadros de dialogos Respuesta, Aunque recomiendo que 
         se llame Aceptar operacion y se quede asi la vdd*/ 
         var AceptarDialogo = dialogoRespuesta.querySelector('#aceptar_Dialogo');
         AceptarDialogo.addEventListener('click', function() {
             respuestaConfirmacion = false;
+            isAlerta = false;
             dialogoRespuesta.classList.add('dashOut');
             enfocarBotonesCuadroDialogo(false,dialogoRespuesta);
         });
@@ -98,11 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 dialogoRespuesta.classList.remove('dashIn');
             }
             if (event.animationName === 'dashOut') {
-                dialogoRespuesta.classList.remove('activo');
-                dialogoRespuesta.classList.remove('dashOut');
-                respuestaConfirmacion = false;
-                dialogoRespuesta.remove();
-                dialogoModal.classList.add('fadeOut');
+                restablecerDialogoRespuesta(dialogo);
+                cerrarDialogoModal();
             }
         });
     }
@@ -112,17 +127,18 @@ document.addEventListener('DOMContentLoaded', function() {
     dialogosOperacion.forEach(function(dialogo) {
         cancelarBoton = dialogo.querySelector('#cancelar_Operacion');
         cancelarBoton.addEventListener('click', function() {
-            dialogo.classList.add('dashOut');
+            cerrarDialogoOperacion(dialogo);
             enfocarBotonesCuadroDialogo(false,dialogo);
         });
     });
 
-    /*identificar que Cuadro de dialogo Operacion de la pagina se tiene que abrir*/
+    /*Identificar que Cuadro de dialogo Operacion de la pagina se tiene que abrir*/
     document.addEventListener('abrirDialogoOperacion', function(e) {
         var idElemento = e.detail.dialogo;
         dialogosOperacion.forEach(function(dialogo) {
             if(dialogo.id === idElemento){
-                dialogoOperacion = dialogo
+                dialogoOperacion = dialogo;
+                isAlerta = false;
                 abrirDialogoModal();
             }
         });
@@ -132,18 +148,57 @@ document.addEventListener('DOMContentLoaded', function() {
         dialogoModal.classList.add('activo');
         dialogoModal.classList.add('fadeIn');
     }
+    function cerrarDialogoModal(){
+        dialogoModal.classList.add('fadeOut');
+    }
+    function restablecerDialogoModal(){
+        dialogoModal.classList.remove('activo');
+        dialogoModal.classList.remove('fadeOut');
+    }
+
+
+    function abrirDialogoOperacion(){
+        dialogoOperacion.classList.add('activo');
+        dialogoOperacion.classList.add('dashIn');
+    }
+    function cerrarDialogoOperacion(dialogo){
+        dialogo.classList.add('dashOut');
+    }
+    function restablecerDialogoOperacion(dialogo){
+        dialogo.classList.remove('activo');
+        dialogo.classList.remove('dashOut');
+        dialogoOperacion="";
+    }
+
+
+    function abrirDialogoRespuesta(){
+        dialogoRespuesta.classList.add('activo');
+        dialogoRespuesta.classList.add('dashIn');
+    }
+    function cerrarDialogoRespuesta(){
+        dialogoRespuesta.classList.add('dashOut');
+    }
+    function restablecerDialogoRespuesta(dialogo){
+        dialogoRespuesta.classList.remove('activo');
+        dialogoRespuesta.classList.remove('dashOut');
+        respuestaConfirmacion = false;
+        dialogoRespuesta.remove();
+    }
 
     /*Evento para las Animaciones a realizar del DialogoModal despues de que
     ciertas animaciones hayan terminado*/
     dialogoModal.addEventListener('animationend', (event) => {
         if (event.animationName === 'fadeIn') {
-            enfocarBotonesCuadroDialogo(true,dialogoOperacion);
-            dialogoOperacion.classList.add('activo');
-            dialogoOperacion.classList.add('dashIn');
+            if(isAlerta){
+                abrirDialogoRespuesta();
+                enfocarBotonesCuadroDialogo(true,dialogoRespuesta);
+            }else{
+                abrirDialogoOperacion();
+                enfocarBotonesCuadroDialogo(true,dialogoOperacion);
+            }
         }
         if (event.animationName === 'fadeOut') {
-            dialogoModal.classList.remove('activo');
-            dialogoModal.classList.remove('fadeOut');
+            restablecerDialogoModal();
         }
     });
 
@@ -156,16 +211,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 dialogo.classList.remove('dashIn');
             }
             if (event.animationName === 'dashOut' && !respuestaConfirmacion) {
-                dialogo.classList.remove('activo');
-                dialogo.classList.remove('dashOut');
-                dialogoOperacion="";
-                dialogoModal.classList.add('fadeOut');
+                restablecerDialogoOperacion(dialogo);
+                cerrarDialogoModal()
             }else if(event.animationName === 'dashOut' && respuestaConfirmacion){
-                dialogo.classList.remove('activo');
-                dialogo.classList.remove('dashOut');
-                dialogoOperacion="";
-                dialogoRespuesta.classList.add('activo');
-                dialogoRespuesta.classList.add('dashIn');
+                restablecerDialogoOperacion(dialogo);
+                abrirDialogoRespuesta();
             }
         });
     });
