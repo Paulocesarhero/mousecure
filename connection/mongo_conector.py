@@ -21,6 +21,10 @@ class Conector:
             mongo_port = os.environ.get("MONGO_PORT", "27017")
             uri = f"mongodb://dev:dev@{mongo_host}:{mongo_port}/?authSource=admin"
             self._host: MongoClient = MongoClient(uri)
+            logging.info("mongodb://dev:dev@mongodb:27017/?authSource=admin")
+            print(uri)
+            print("Ulises")
+
             logging.info("Conexión exitosa a la base de datos.")
         except (ConnectionFailure, InvalidURI, ConfigurationError, OperationFailure) as e:
             logging.error(f"Error al conectarse a la base de datos: {e}")

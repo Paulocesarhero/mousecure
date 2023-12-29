@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+    <link rel="stylesheet" href="../CSS/CuadroDialogo.css">
+    <link rel="stylesheet" href="../CSS/MainUserStyle.css">
+    <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
+    <title>Mousecure</title>
+<!--
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        function Prueba(){
+            const url = 'http://localhost:8000/users/';
+            const data = {
+                name: "Ulises Ramos Mexicano",
+                age: 22,
+                address: {
+                    street: "Santa Maria",
+                    city: "Coatzacoalcos",
+                    state: "Veracruz",
+                    zip_code: "96536"
+                }
+            };
+
+            axios.post(url, data)
+            .then(response => {
+                console.log('Respuesta del servidor:', response.data);
+            })
+            .catch(error => {
+                console.error('Hubo un error en la solicitud:', error);
+            });
+        }
+
+    </script>    
+-->    
+
+<script>
+
+</script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px"/>MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen" height="16px" weight="16px">
+                        </div>
+                        Reportes
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px"/>Mis reportes</a></li>
+                        <li><a href="../html/ReportarSiniestro.html"><img src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px" weight="32px"/>Reportar Siniestros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen" height="16px" weight="16px">
+                        </div>                        
+                        Pólizas
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px"/>Mis Pólizas</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px"/>Comprar Pólizas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen" height="16px" weight="16px">
+                        </div>
+                        Contactos
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px"/>Correo Electrónico</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px"/>Número de celular</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option"src="../Resources/Icons/User - LT.png" height="35px" weight="35px"/>
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px" weight="32px"/>Ajustes</a></li>
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px"/>Cerrar Sesión</a></li>
+                    </ul>
+                </li>                
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px"/>
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"src="../Resources/Icons/User - LT.png" height="35px" weight="35px"/>[Nombre de Usuario]</a></li>
+                    &nbsp;
+                    <li class="sidebar-header">Reportes</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px"/>Mis reportes</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px" weight="32px"/>Reportar Siniestros</a></li>                    
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Polizas</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px"/>Mis Pólizas</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px"/>Comprar Pólizas</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Contactos</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px"/>Correo Electrónico</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px"/>Número de celular</a></li>
+                    <hr>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px"/>Cerrar Sesión</a></li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="titulo_Pagina">
+            Bienvenido
+        </div>
+        <div id="estructura_Contenido">
+            <section id="reportar_Siniestro">
+                <p class="contenido-Predeterminado">¿Sufrió un siniestro? ¿Su vehículo cuenta con una póliza? Entonces, levante un reporte para que se le dé el servicio que necesite.</p>
+                &nbsp;
+                <p class="contenido-Predeterminado">¡Levante un reporte de siniestro ahora mismo!</p>
+                &nbsp;
+                <button id="btn_Reportar_Siniestro" tabindex="0" onclick="location.href='../html/ReportarSiniestro.html'"><img src="../Resources/Icons/ReportarSiniestro - NT.png" height="80px" weight="80px"/></button>
+            </section>
+            <section id="ultimo_Reporte">
+                <p class="contenido-Predeterminado">El último reporte realizado ya tiene una respuesta por parte de un de nuestro ajustadores:</p>
+                &nbsp;
+                <div id="contenedor_Tabla">
+                    <table>
+                        <thead>
+                          <tr>
+                            <th>Folio</th>
+                            <th>Fecha del siniestro</th>
+                            <th>Dictamen</th>
+                          </tr>
+                        </thead>
+                        <tbody id="info_Ultimo_Reporte">
+                          <tr>
+                            <td>978456312</td>
+                            <td>12 Dic 2022</td>
+                            <td><span class="dictamen-proceso">Dictaminado</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+                &nbsp;
+                <button id="btn_Detalles_Reporte" tabindex="0">Ver Detalles<img src="../Resources/Icons/FlechaDer - LT.png" height="32px" weight="32px"/></button>
+            </section>
+        </div>
+    </main>
+
+
+
+        <!-- Formato de cuadro de dialogos -->   
+        <div class="cuadro-Dialogo-Modal">
+            <div class="cuadro-Dialogo operacion" id="logOut">
+                <!-- Rempleza el icono por el que gustes -->
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>¿Desea cerrar sesión?</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>Saldra de su sesión actual.</p>
+                </div>
+                    <!-- Agrega los botones que gustes -->
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
+                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+
+    <!--
+    <button onclick="Prueba()">Prueba</button>
+    -->
+
+</body>
+</html>

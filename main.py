@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI, HTTPException
 from starlette import status
+from fastapi.middleware.cors import CORSMiddleware
 
 from dao.reporte_dao import ReporteDao
 from domain.reporte import Report
@@ -11,6 +12,14 @@ from dao.user_dao import UserDao
 from security.security import get_password_hash
 
 app = FastAPI(title="Mousecure", version="ALPHA")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todas las orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos
+    allow_headers=["*"],  # Permite todos los headers
+)
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -26,7 +35,7 @@ async def create_user(user: User):
     dao = UserDao()
     result = dao.create_user_in_db(user)
     if result == 0:
-        return {"mensaje": f"Usuario creado: "}
+        return {"mensaje": f"Usuario creado: Ulises"}
     elif result == -1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario existente en la BD")
     else:
@@ -39,7 +48,7 @@ async def create_report_employee(new_report: Report):
     dao = ReporteDao()
     result = dao.create_report_with_Employee(new_report)
     if result == 0:
-        return {"mensaje": f"Reporte creado: "}
+        return {"mensaje": f"Reporte creado: Reporte exitoso"}
     elif result == -1:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario existente en la BD")
     else:
