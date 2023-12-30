@@ -2,65 +2,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const elementosTabIndex = document.querySelectorAll('[tabindex]');
     const dialogoModal = document.querySelector('.cuadro-Dialogo-Modal');
     let dialogosOperacion = document.querySelectorAll('.cuadro-Dialogo.operacion');
-
     let tabindexArray = obtenerTodosIndex();
+    let dialogoFocus;
     let dialogoRespuesta;
     let dialogoOperacion;
     let respuestaConfirmacion = false;
     let isAlerta = false;
 
+    /*Evento para las Animaciones a realizar del DialogoModal despues de que
+    ciertas animaciones hayan terminado*/
+    crearEventosAnimacionDialogos(dialogoModal)
 
 
-
-
-
-
-
-    /*Funcionalidad de los Cuadros de dialogo de tipo operacion (Aceptar y Cancelar)
-    Estos pueden tener más opciones*/
+    /*Preparar Cada dialogo Operacion */
     dialogosOperacion.forEach(function(dialogo) {
-        aceptarBoton = dialogo.querySelector('#aceptar_Operacion');
-        aceptarBoton.addEventListener('click', function() {
-            respuestaConfirmacion = true;
-            dispararEventoConfirmarOperacion(true);
-            enfocarBotonesCuadroDialogo(false,dialogo);
-        });
+        /*Desenficar todos los botones de los cuadros de dialogo Operacion */
+        enfocarBotonesCuadroDialogo(false,dialogo);
+        //Asignar eventos a los botones del dialogo operacion
+        asignarEventoBotonesDialogo(dialogo);
+        /*Agregar a cada dialogoOperacion un Evento para las Animaciones a realizar
+        despues de que ciertas animaciones hayan terminado*/
+        crearEventosAnimacionDialogos(dialogo)
     });
 
 
-
-    
-    /*Enviar que si se quiere realizar la accion*/
+    /*Crea Un evento especial para realizar un efecto en especificico/ 
+    /*Enviar que si se quiere realizar la accion, desde otro documento escucha este evento y sigue con las instrucciones*/
     function dispararEventoConfirmarOperacion(respuestaDialogo) {
         var enviarRespuestaDialogo = new CustomEvent('enviarRespuestaDialogo', {
             detail : {respuesta: respuestaDialogo}
         });
-        console.log("|3| Disparo evento enviarRespuestaDialogo desde CuadroDeDIalogo.js");
         document.dispatchEvent(enviarRespuestaDialogo);
     }
 
+
+    /*Identificar que Cuadro de dialogo Operacion de la pagina se tiene que abrir*/
+    document.addEventListener('abrirDialogoOperacion', function(e) {
+        var idElemento = e.detail.dialogo;
+        dialogosOperacion.forEach(function(dialogo) {
+            if(dialogo.id === idElemento){
+                dialogoOperacion = dialogo;
+                dialogoFocus = dialogo;
+                isAlerta = false;
+                abrirDialogo(dialogoModal);
+            }
+        });
+    });
+
     /*Crear El cuadro de respuesta*/
     document.addEventListener('respuestaApi', function(e) {
-        console.log("|8| dispararDialogoResultado");
         dialogoRespuesta = CrearDialogoRespuesta(e.detail.src, e.detail.encabezado, e.detail.contenido,e.detail.boton);
-        agregarEventoDialogoRespuesta (dialogoRespuesta);
+        agregarEventoDialogoRespuesta ();
         isAlerta = e.detail.alerta;
+        //Identifica si es alerta o respuesta
         if(isAlerta){
-            abrirDialogoModal();
+            dialogoFocus = dialogoRespuesta;
+            abrirDialogo(dialogoModal);
         }else{
-            dialogoOperacion.classList.add('dashOut');
+            cerrarDialogo(dialogoFocus);
         }
-        /*Formato para que cualquier boton pueda cerrar Cuadros de dialogos Respuesta, Aunque recomiendo que 
-        se llame Aceptar operacion y se quede asi la vdd*/ 
-        var AceptarDialogo = dialogoRespuesta.querySelector('#aceptar_Dialogo');
-        AceptarDialogo.addEventListener('click', function() {
-            respuestaConfirmacion = false;
-            isAlerta = false;
-            dialogoRespuesta.classList.add('dashOut');
-            enfocarBotonesCuadroDialogo(false,dialogoRespuesta);
-        });
-
-        enfocarBotonesCuadroDialogo(true,dialogoRespuesta)
     });
     function CrearDialogoRespuesta(srcImagen,encabezado, contenido, textoBoton) {
         // Crear el contenedor del diálogo
@@ -108,133 +108,153 @@ document.addEventListener('DOMContentLoaded', function() {
         cuadroDialogoModal.appendChild(dialogo);
         return dialogo;
     }
-    function agregarEventoDialogoRespuesta (dialogo){
+    function agregarEventoDialogoRespuesta (){
+        asignarEventoBotonesDialogo(dialogoRespuesta);
+    
         /*Evento para las Animaciones a realizar del dialogo respuesta despues de que
         ciertas animaciones hayan terminado*/
-        dialogoRespuesta.addEventListener('animationend', (event) => {
-            if (event.animationName === 'dashIn') {
-                dialogoRespuesta.classList.remove('dashIn');
+        crearEventosAnimacionDialogos(dialogoRespuesta)
+    }
+
+
+    /*Funciones para funcionalidad de Dialogos*/
+    function crearEventosAnimacionDialogos(dialogo){
+        //Identifiar si es El dialogoModal
+        if(dialogo.querySelector('.cuadro-Dialogo')){
+            //Dialogo modal
+            dialogo.addEventListener('animationend', (event) => {
+                if (event.animationName === 'fadeIn') {
+                    abrirDialogo(dialogoFocus);
+                }
+                if (event.animationName === 'fadeOut') {
+                    restablecerDialogo(dialogoModal);
+                }
+            });
+        }else{
+            //Identificar si es operacion o resultado
+            if(dialogo.classList.contains('operacion')){
+                dialogo.addEventListener('animationend', (event) => {
+                    if(!respuestaConfirmacion){
+                        if (event.animationName === 'dashIn') {
+                            afinarDialogoYModal(dialogo);
+                        }else{
+                            restablecerDialogo(dialogoFocus);
+                            cerrarDialogo(dialogoModal);
+                        }
+                    }else{
+                        if(event.animationName === 'dashOut'){
+                            restablecerDialogo(dialogoFocus);
+                            abrirDialogo(dialogoRespuesta);
+                        }
+                    }
+                });
+            }else if(dialogo.classList.contains('resultado')) {
+                //Dialogo respuesta
+                dialogo.addEventListener('animationend', (event) => {
+                    if (event.animationName === 'dashIn') {
+                        afinarDialogoYModal(dialogoRespuesta);
+                    }
+                    if (event.animationName === 'dashOut') {
+                        restablecerDialogo(dialogoRespuesta);
+                        cerrarDialogo(dialogoModal);
+                    }
+                });
             }
-            if (event.animationName === 'dashOut') {
-                restablecerDialogoRespuesta(dialogo);
-                cerrarDialogoModal();
+    
+        } 
+    }
+
+    function asignarEventoBotonesDialogo(dialogo){
+        var botones = dialogo.querySelectorAll('button');
+        for (let i = 0; i < botones.length; i++) {
+            //Agrega un case para cada boton de un dialogo operacion
+            switch (botones[i].id) {
+                case 'aceptar_Operacion':
+                    console.log("Aceptar Boton")
+                    /*Funcionalidad de los Cuadros de dialogo de tipo operacion (Aceptar y Cancelar)
+                    Con este formato se puede agregar mas botones con funciones especiales Pero solo para los dialogo Operacion*/
+                    botones[i].addEventListener('click', function() {
+                        respuestaConfirmacion = true;
+                        /*Crea Un evento especial para un nuevo boton*/ 
+                        dispararEventoConfirmarOperacion(respuestaConfirmacion);
+                        enfocarBotonesCuadroDialogo(false,dialogo);
+                    });
+                    break;
+                case 'cancelar_Operacion':
+                     /*Formato para que cualquier boton pueda cerrar Cuadros de dialogos Operacion (Aceptar y Cancelar o n btn),
+                     Aunque recomiendo que se llame cancelar operacion*/ 
+                    console.log("Cancelar Boton")
+                    botones[i].addEventListener('click', function() {
+                        cerrarDialogo(dialogo);
+                    });
+                    break;   
+                //Evento listener para el boton de los cuadros de respuesta     
+                case 'aceptar_Dialogo':
+                    /*Formato para que cualquier boton pueda cerrar Cuadros de dialogos Respuesta (1 btn), Aunque recomiendo que 
+                    se llame Aceptar operacion y se quede asi la vdd*/ 
+                     botones[i].addEventListener('click', function() {
+                        isAlerta = false;
+                        cerrarDialogo(dialogo);
+                    });
+                    break;                                
             }
-        });
-    }
-
-    /*Formato para que cualquier boton pueda cerrar Cuadros de dialogos Operacion, Aunque recomiendo que 
-    se llame cancelar operacion*/ 
-    dialogosOperacion.forEach(function(dialogo) {
-        cancelarBoton = dialogo.querySelector('#cancelar_Operacion');
-        cancelarBoton.addEventListener('click', function() {
-            cerrarDialogoOperacion(dialogo);
-            enfocarBotonesCuadroDialogo(false,dialogo);
-        });
-    });
-
-    /*Identificar que Cuadro de dialogo Operacion de la pagina se tiene que abrir*/
-    document.addEventListener('abrirDialogoOperacion', function(e) {
-        var idElemento = e.detail.dialogo;
-        dialogosOperacion.forEach(function(dialogo) {
-            if(dialogo.id === idElemento){
-                dialogoOperacion = dialogo;
-                isAlerta = false;
-                abrirDialogoModal();
-            }
-        });
-        console.log("|2| Escucho evento abrirDialogoOperacion desde reporteSiniestro.js");
-    });
-    function abrirDialogoModal(){
-        dialogoModal.classList.add('activo');
-        dialogoModal.classList.add('fadeIn');
-    }
-    function cerrarDialogoModal(){
-        dialogoModal.classList.add('fadeOut');
-    }
-    function restablecerDialogoModal(){
-        dialogoModal.classList.remove('activo');
-        dialogoModal.classList.remove('fadeOut');
+        }
     }
 
 
-    function abrirDialogoOperacion(){
-        dialogoOperacion.classList.add('activo');
-        dialogoOperacion.classList.add('dashIn');
+    /*Funciones para organizar el tiempo entre dialogos*/
+    function abrirDialogo(dialogo){
+        dialogo.classList.add('activo');
+        if(dialogo.querySelector('.cuadro-Dialogo')){
+            dialogo.classList.add('fadeIn');
+        }else{
+            dialogo.classList.add('dashIn');
+            enfocarBotonesCuadroDialogo(true,dialogo);
+        }
     }
-    function cerrarDialogoOperacion(dialogo){
-        dialogo.classList.add('dashOut');
+    function cerrarDialogo(dialogo){
+        if(dialogo.querySelector('.cuadro-Dialogo')){
+            dialogo.classList.add('fadeOut');
+        }else{
+            dialogo.classList.add('dashOut');
+        }
+        enfocarBotonesCuadroDialogo(false,dialogo);        
     }
-    function restablecerDialogoOperacion(dialogo){
+    function afinarDialogoYModal(dialogo){
+        dialogo.classList.remove('dashIn');
+        dialogoModal.classList.remove('fadeIn');
+    }
+    function restablecerDialogo(dialogo){
         dialogo.classList.remove('activo');
-        dialogo.classList.remove('dashOut');
-        dialogoOperacion="";
-    }
-
-
-    function abrirDialogoRespuesta(){
-        dialogoRespuesta.classList.add('activo');
-        dialogoRespuesta.classList.add('dashIn');
-    }
-    function cerrarDialogoRespuesta(){
-        dialogoRespuesta.classList.add('dashOut');
-    }
-    function restablecerDialogoRespuesta(dialogo){
-        dialogoRespuesta.classList.remove('activo');
-        dialogoRespuesta.classList.remove('dashOut');
-        respuestaConfirmacion = false;
-        dialogoRespuesta.remove();
-    }
-
-    /*Evento para las Animaciones a realizar del DialogoModal despues de que
-    ciertas animaciones hayan terminado*/
-    dialogoModal.addEventListener('animationend', (event) => {
-        if (event.animationName === 'fadeIn') {
-            if(isAlerta){
-                abrirDialogoRespuesta();
-                enfocarBotonesCuadroDialogo(true,dialogoRespuesta);
-            }else{
-                abrirDialogoOperacion();
-                enfocarBotonesCuadroDialogo(true,dialogoOperacion);
+        if(dialogo.querySelector('.cuadro-Dialogo')){
+            dialogo.classList.remove('fadeOut');
+        }else{
+            dialogo.classList.remove('dashOut');
+            dialogo.classList.contains('resultado');
+            if(dialogo.classList.contains('operacion')){
+                dialogoOperacion="";
+            }else if(dialogo.classList.contains('resultado')) {
+                respuestaConfirmacion = false;
+                dialogoRespuesta.remove();
+                dialogoRespuesta = "";
             }
-        }
-        if (event.animationName === 'fadeOut') {
-            restablecerDialogoModal();
-        }
-    });
 
-    /*Agregar a cada dialogoOperacion un Evento para las Animaciones a realizar
-    despues de que ciertas animaciones hayan terminado*/
-    dialogosOperacion.forEach(function(dialogo) {
-        dialogo.addEventListener('animationend', (event) => {
-            if (event.animationName === 'dashIn' && !respuestaConfirmacion) {
-                dialogoModal.classList.remove('fadeIn');
-                dialogo.classList.remove('dashIn');
-            }
-            if (event.animationName === 'dashOut' && !respuestaConfirmacion) {
-                restablecerDialogoOperacion(dialogo);
-                cerrarDialogoModal()
-            }else if(event.animationName === 'dashOut' && respuestaConfirmacion){
-                restablecerDialogoOperacion(dialogo);
-                abrirDialogoRespuesta();
-            }
-        });
-    });
+        }     
+    }
 
 
     /*Funcionalidad para que el tab solo enfoque en los botones del cuadro de dialogo que se muestra*/
-    function enfocarBotonesCuadroDialogo(abrirDialogo,dialogo){
-        tabIndexValor = abrirDialogo ? 0 : -1;
+    function enfocarBotonesCuadroDialogo(mostrarDialogo,dialogo){
+        tabIndexValor = mostrarDialogo ? 0 : -1;
         var botones = dialogo.querySelectorAll('button');
-
-        // Cerrar o restablecer índices basado en el estado de abrirDialogo
+        // Cerrar o restablecer índices basado en el estado de mostrarDialogo
         if (!respuestaConfirmacion) {
-            if (abrirDialogo) {
-                cerrarTodosIndex();
-            } else {
-                restablecerTodosIndex();
+            bloquearTabElementosGUI(mostrarDialogo);
+        }else{
+            if(dialogo.classList.contains('operacion')) {
+                tabIndexValor = -1;
             }
         }
-    
         for (let i = 0; i < botones.length; i++) {
             botones[i].tabIndex = tabIndexValor;
         }
@@ -250,19 +270,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         return tabindexArray;
     }
-    function restablecerTodosIndex(){
+    function bloquearTabElementosGUI(isBloquear){
         if(elementosTabIndex.length === tabindexArray.length) {
-            elementosTabIndex.forEach((elemento, index) => {
-                elemento.tabIndex = tabindexArray[index];
-            });
+            if(isBloquear){
+                elementosTabIndex.forEach((elemento) => {
+                    elemento.tabIndex = -1;
+                });
+            }else{
+                elementosTabIndex.forEach((elemento, index) => {
+                    elemento.tabIndex = tabindexArray[index];
+                });
+            }
         }
-    }
-    function cerrarTodosIndex(){
-        if(elementosTabIndex.length === tabindexArray.length) {
-            elementosTabIndex.forEach((elemento, index) => {
-                elemento.tabIndex = -1;
-            });
-        }
-    }
 
+    }
 });

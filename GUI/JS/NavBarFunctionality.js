@@ -148,6 +148,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /*Funciones para logOut del navBar y sideBar */
+    //Probablemente para el log out no necesite un mensaje que le diga que se salio con exito, esto solo esta aqui para 
+    //Visualizar un ejemplo
     logOutNavBar.addEventListener('click', async function(event) {
         var resultadoDialogo = await dispararEventoAbrirDialogoOperacion("logOut");
         if (resultadoDialogo) {

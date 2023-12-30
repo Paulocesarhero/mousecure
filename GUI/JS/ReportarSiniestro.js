@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         actualizarEstadoBoton();
     });
     
+
+    //Las coordenadas paps
     function geoFindMe() {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -73,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
     activarCarruselCheckbox.addEventListener('change', actualizarEstadoBoton);
 
 
+    /*Las funciones deben de ser Asyn para poder realizar el proceso de:
+    Mostrar Dialgo -> Usuario presiona aceptar Operacion -> Se muestra el dialogo de repesua en especifico*/
     document.getElementById('btn_Aceptar').addEventListener('click', async function() {
         const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("enviar_Reporte");
         console.log("|5| Escucho evento desde reporteSiniestro.js");
@@ -80,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("|6| Escucho evento desde reporteSiniestro.js");
             var respuestaEjemplo = ejecutarUnallamadaEnespeficicoAlApi();
             console.log(respuestaEjemplo) ;
+            /*Si no quieres que se devuelva un cuadro de confirmacion, como el logout no agregues uses el metodo de dispararDialogoResultado*/
             switch (respuestaEjemplo) {
                 case 1:
                     dispararDialogoResultado(
@@ -115,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     Mostrar Dialgo -> Usuario presiona aceptar Operacion -> Se muestra el dialogo de repesua en especifico*/
     document.getElementById('btn_Cancelar').addEventListener('click', function() {
 
-
+        /*Un ejemplo donde solo se dispara una alerta,*/
         dispararDialogoResultado(
             imagenesDialogoRespuesta[0],//Escoge la imagen que se adecue a tu CU
             "Solo soy un dialogo de respuesta, EXITO!: ",//Encabezado del errror
