@@ -3,6 +3,7 @@ import logging
 from domain.user import User
 from connection.mongo_conector import Conector
 from pymongo.collection import Collection
+from bson import ObjectId
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -28,3 +29,25 @@ class ReporteDao:
         except Exception as e:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
             return -2
+        
+    def get_all_reportes_02(self):
+        try:
+            data: Collection = self.db.reporte
+            print(data)
+            result = data.find({}, {"fechaDelSiniestro": 1, "dictamen": 1, "_id": 1})
+            print(result)
+            reportes = [Report(**reporte) for reporte in result]
+            print(reportes)
+            return reportes
+        except Exception as e:
+            logging.exception(f"Error al recuperar todos los reportes: {e}")
+            return None
+        
+    def get_all_reportes(self):
+        try:
+            data: Collection = self.db.reporte
+            reportes = list(data.find())
+            return [Report(**reporte) for reporte in reportes]
+        except Exception as e:
+            self.logger.exception(f"Error al obtener todos los reportes de la base de datos: {e}")
+            return None    

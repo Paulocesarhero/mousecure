@@ -45,3 +45,17 @@ class ConductorDao:
         except Exception as e:
             logging.exception(f"Error al actualizar conductor en la base de datos: {e}")
             return -2
+
+        
+    def get_conductor_by_id(self, conductor_id: str) -> Conductor:
+        try:
+            data: Collection = self.db.conductores
+            existing_data = data.find_one({"_id": ObjectId(conductor_id)})
+            if existing_data is None:
+                logging.error(f"No se encontró el conductor con ID {conductor_id}")                
+                return None            
+            Conductor = existing_data
+            return Conductor
+        except Exception as e:
+            logging.exception(f"Error al actualizar conductor en la base de datos: {e}")
+            return None
