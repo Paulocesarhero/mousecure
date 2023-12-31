@@ -82,3 +82,35 @@ async def register_conductor(new_conductor: Conductor):
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+
+# Endpoint para obtener un conductor por ID
+@app.get("/conductor/{conductor_id}", response_model=Conductor)
+async def get_conductor_by_id(conductor_id: str):
+    dao = ConductorDao()
+    try:
+        conductor = dao.get_conductor_by_id(conductor_id)
+        if conductor is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se encontrado")                    
+        else:
+            return conductor
+    except HTTPException as exceptionHTTP:
+        raise exceptionHTTP
+    except Exception as exceptionHTTP:
+        logging.exception(f"Error en el endpoint de obtención de conductor por ID: {exceptionHTTP}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al obtener conductor por ID")
+    
+
+# Endpoint para obtener todos los reportes
+@app.get("/reportes", response_model=list[Report])
+async def get_all_reportes():
+    dao = ReporteDao()
+    try:
+        reportes = dao.get_all_reportes()
+        if reportes is None:
+            raise HTTPException(status_code=404, detail="No se encontraron reportes")
+        return reportes
+    except HTTPException as exceptionHTTP:
+        raise exceptionHTTP
+    except Exception as exceptionHTTP:
+        logging.exception(f"Error en la obtención de todos los reportes: {exceptionHTTP}")
+        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")
