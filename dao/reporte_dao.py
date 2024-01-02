@@ -21,7 +21,7 @@ class ReporteDao:
 
     def create_report_with_Employee(self, new_report: Report):
         try:
-            data: Collection = self.db.users
+            data: Collection = self.db.reporte
             user_dict = new_report.model_dump()
             user_dict["empleadoAsignado"] = new_report.empleadoAsignado.model_dump()
             data.insert_one(user_dict)
