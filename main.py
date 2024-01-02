@@ -114,3 +114,24 @@ async def get_all_reportes():
     except Exception as exceptionHTTP:
         logging.exception(f"Error en la obtención de todos los reportes: {exceptionHTTP}")
         raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")
+    
+
+# Endpoint para actualizar el reporte
+@app.put("/reporte/{reporte_id}", status_code=status.HTTP_200_OK)
+async def update_reporte(reporte_id: str, updated_data: dict):
+    dao = ReporteDao()
+    try:
+        result = dao.update_reporte(reporte_id, updated_data)        
+        if result == 0:
+            return {"mensaje": "Reporte actualizado exitosamente"}
+        elif result == 1:
+            return {"mensaje": "El reporte ya tiene los datos proporcionados, no se realizó ninguna actualización"}
+        elif result == -1:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Reporte no encontrado")
+        elif result == -2:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al actualizar reporte")
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar reporte")
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de actualización de reporte: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar reporte")    

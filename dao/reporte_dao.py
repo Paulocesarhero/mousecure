@@ -51,3 +51,20 @@ class ReporteDao:
         except Exception as e:
             self.logger.exception(f"Error al obtener todos los reportes de la base de datos: {e}")
             return None    
+        
+
+    def update_reporte(self, reporte_id: str, updated_data: dict) -> int:
+        try:
+            data: Collection = self.db.reporte
+            existing_data = data.find_one({"_id": ObjectId(reporte_id)})
+            if existing_data is None:
+                self.logger.error(f"No se encontró el reporte con ID {reporte_id}")
+                return -1
+            result = data.update_one({"_id": ObjectId(reporte_id)}, {"$set": updated_data})
+            if result.modified_count > 0:
+                return 0
+            else:
+                return 1
+        except Exception as e:
+            self.logger.exception(f"Error al actualizar reporte en la base de datos: {e}")
+            return -2        
