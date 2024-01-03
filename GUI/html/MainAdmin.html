@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+    <link rel="stylesheet" href="../CSS/CuadroDialogo.css">
+    <link rel="stylesheet" href="../CSS/MainAdminStyle.css">
+    <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
+
+    <title>Mousecure</title>
+<script>
+
+</script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px"/>MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option"src="../Resources/Icons/User - LT.png" height="35px" weight="35px"/>
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px"/>Cerrar Sesión</a></li>
+                    </ul>
+                </li>                
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px"/>
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"src="../Resources/Icons/User - LT.png" height="35px" weight="35px"/>[Nombre de Usuario]</a></li>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px"/>Cerrar Sesión</a></li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="titulo_Pagina">
+            Administrar Empleados
+        </div>
+        <div class="ordenar-contenido">
+            <div id="estructura_Contenido">
+                <section id="panel_Tabla">
+                    <div id="instrucciones_Tabla">
+                        <h2>Puede buscar a empleados por nombre o nombre de usuario en la barra de búsqueda</h2>
+                    </div>
+                    <div id="funciones_Tabla">
+                        <div class="contenedor-Componentes" id="contenedor_Filtro">
+                            <label for="filtro_Tabla">Filtro de Busqueda</label><br> 
+                            <select id="filtro_Tabla" tabindex="0" value="">
+                                <option value="Ajustador">Ajustador</option>
+                                <option value="Ejecutivo">Ejecutivo de Asistencia</option>
+                                <option value="Admin">Administrador</option>
+    
+                            </select>
+                        </div>
+                        <div class="contenedor-Componentes" id="contenedor_Busqueda">
+                            <label for="busqueda_Tabla">Barra de busqueda</label><br> 
+                            <input type="text" id="busqueda_Tabla" tabindex="0">
+                        </div>
+                        <div class="contenedor-Componentes" id="contenedor_Boton">
+                            <button id="btn_Agregar_Empleado" class="blue" tabindex="0">
+                                <img src="../Resources/Icons/AgregarPersona-LT.png" height="25px" weight="25px"/>
+                                Nuevo Empleado
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <section id="contenedor_Tabla">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Lista de empelados</th>
+                              </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                  <div id="infoEmpleado">
+                                      <div id="puestoNombre">
+                                          <h5>Ajustador</h5>
+                                          <p>Nombre + ApellidoPaterno + ApellidoMaterno</p>
+                                      </div>
+                                      <div id="Botones">
+                                          <button class="icon-button blue" onclick="verDetalle()" tabindex="0">
+                                              <img src="../Resources/Icons/Ver-NT.png" height="32px" width="32px" alt="Ver" />
+                                            </button>
+                                            <button class="icon-button blue" onclick="editarDetalle()" tabindex="0">
+                                              <img src="../Resources/Icons/Lapiz-NT.png" height="32px" width="32px"  alt="Editar" />
+                                            </button>
+                                            <button class="icon-button red" onclick="eliminarDetalle()" tabindex="0">
+                                              <img src="../Resources/Icons/Eliminar-NT.png" height="32px" width="32px"  alt="Eliminar" />
+                                            </button>
+                                      </div>
+                                  </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- Repite las filas según sea necesario -->
+                      </table>
+                </section>
+            </div>
+        </div>
+
+            
+
+        <!-- Formato de cuadro de dialogos -->   
+        <div class="cuadro-Dialogo-Modal">
+            <div class="cuadro-Dialogo operacion" id="enviar_Reporte">
+                <!-- Rempleza el icono por el que gustes -->
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>¿Está seguro de guardar el reporte?</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>Una vez que se guarde el reporte, la información no se podrá editar ni eliminar.</p>
+                </div>
+                    <!-- Agrega los botones que gustes -->
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
+                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
+                </div>
+            </div>
+
+            <div class="cuadro-Dialogo operacion" id="logOut">
+                <!-- Rempleza el icono por el que gustes -->
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>¿Desea cerrar sesión?</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>Saldra de su sesión actual.</p>
+                </div>
+                    <!-- Agrega los botones que gustes -->
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
+                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        </div>
+
+
+
+
+
+    </main>
+    <!--
+    <button onclick="Prueba()">Prueba</button>
+    -->
+
+</body>
+</html>

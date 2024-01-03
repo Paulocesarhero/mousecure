@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&family=Roboto&family=Roboto+Mono&display=swap');
+/*Estilo predetermiando para todos los doc*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+/*Estilo predetermiando para todos los doc*/
+
+/*Estilo del Modal*/
+.cuadro-Dialogo-Modal{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: rgb(144, 148, 150, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    font-family: 'Roboto', sans-serif;
+    opacity: 0;
+    left: 0;
+    top: 0;
+}
+.cuadro-Dialogo-Modal.activo{
+    display: flex;
+    opacity: 1;
+
+}
+
+/*estilo del dialogo*/
+.cuadro-Dialogo{
+    position: fixed;
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ECE6F0;
+    border-radius: 28px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    top: 10%;
+    left: 40%;
+}
+.cuadro-Dialogo.activo{
+    display: flex;
+    opacity: 1;
+    top: 35%;
+    left: 40%;
+
+}
+
+/*Componentes del cuadro de dialogo*/
+#icono_Cuadro_Dialogo{
+    height: 32px;
+    width: 32px;
+    background: none;    
+    border-radius: 100%
+}
+
+
+#encabezado_Cuadro_Dialogo{
+    text-align: center;
+}
+#contenido_Cuadro_Dialogo{
+    text-align: justify;
+}
+
+
+#botones_Cuadro_Dialogo{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 35px;
+    width: 100%;
+    gap: 5%;
+}
+#botones_Cuadro_Dialogo button{
+    width: 20%; 
+    height: 100%; 
+    border-radius: 100px; 
+    border: none;
+    color: white;
+}
+
+
+.confirmar-Accion{
+    background-color: #4F9CF9;
+}
+.confirmar-Accion:hover{
+    background-color: #81b8fc;
+    transition: background-color 0.5s, color 0.5s;
+    cursor:pointer;
+}
+.confirmar-Accion:focus{
+    background-color: #81b8fc;
+    border:3px solid #000000;
+    box-shadow: inset 0 0 0 3px #ffffff;
+    transition: background-color 0.5s, color 0.5s;
+    position:relative;
+    top: 3px; 
+}
+
+.cancelar-Accion{
+    background-color: #B3261E;
+}
+.cancelar-Accion:hover{
+    background-color: #d46e68;
+    transition: background-color 0.5s, color 0.5s;
+    cursor:pointer;
+}
+.cancelar-Accion:focus{
+    background-color: #d46e68;
+    border:3px solid #000000;
+    box-shadow: inset 0 0 0 3px #ffffff;
+    transition: background-color 0.5s, color 0.5s;
+    position:relative;
+    top: 3px; 
+}
+
+
+/*Animaciones de los dialogos*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.cuadro-Dialogo-Modal.activo.fadeIn{
+    animation: fadeIn 0.1s ease-in forwards;
+}
+
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.cuadro-Dialogo-Modal.activo.fadeOut{
+    animation: fadeOut 0.05s ease-in forwards;
+}
+
+
+@keyframes dashIn {
+    from {
+        opacity: 0;
+        top: 10%;
+        left: 40%;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        top: 0;
+        top: 35%;
+        left: 40%;
+        transform: scale(1);
+    }
+}
+
+.cuadro-Dialogo.activo.dashIn {
+    animation: dashIn 0.3s ease-in-out;
+}
+
+
+@keyframes dashOut {
+    from {
+        opacity: 1;
+        top: 35%;
+        left: 40%;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        top: 10%;
+        left: 40%;
+        transform: scale(0.5);
+    }
+}
+
+.cuadro-Dialogo.activo.dashOut {
+    animation: dashOut 0.3s ease-in-out;
+}
+
+/*Contenedores Responsivos*/
+@media screen and (max-width: 525px) {
+
+    .cuadro-Dialogo.activo {
+        display: flex;
+        opacity: 1;
+        top: 40%;
+        left: 5%;
+    }
+
+}
+
+
