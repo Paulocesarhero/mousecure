@@ -5,6 +5,10 @@ from pymongo.collection import Collection
 from bson import ObjectId
 import logging
 
+
+from security.Auth_Handler import signJWT,randomString
+from security.Auth_Bearer import JWTBearer
+
 logging.basicConfig(
     level=logging.DEBUG,
     filename='conductorDAO.log',
@@ -59,3 +63,21 @@ class ConductorDao:
         except Exception as e:
             logging.exception(f"Error al actualizar conductor en la base de datos: {e}")
             return None
+        
+
+    def create_sesion(self, conductor_id: str) -> int:
+        try:
+            data: Collection = self.db.conductores
+            existing_data = data.find_one({"_id": ObjectId(conductor_id)})
+            if existing_data is None:
+                logging.error(f"No se encontró el conductor con ID {conductor_id}")                
+                return -1      
+            jwt = signJWT(conductor_id)      
+            result = data.update_one({"_id": ObjectId(conductor_id)}, {"$set": jwt})
+            if result.modified_count > 0:
+                return 0  
+            else:
+                return 1  
+        except Exception as e:
+            logging.exception(f"Error al actualizar conductor en la base de datos: {e}")
+            return -2
