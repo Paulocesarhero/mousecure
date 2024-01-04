@@ -28,20 +28,7 @@ class ReporteDao:
             return 0
         except Exception as e:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
-            return -2
-        
-    def get_all_reportes_02(self):
-        try:
-            data: Collection = self.db.reporte
-            print(data)
-            result = data.find({}, {"fechaDelSiniestro": 1, "dictamen": 1, "_id": 1})
-            print(result)
-            reportes = [Report(**reporte) for reporte in result]
-            print(reportes)
-            return reportes
-        except Exception as e:
-            logging.exception(f"Error al recuperar todos los reportes: {e}")
-            return None
+            return -2        
         
     def get_all_reportes(self):
         try:
