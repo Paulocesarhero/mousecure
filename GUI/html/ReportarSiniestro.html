@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mousecure</title>
     <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
+
     <!--Script para determinar quien es quien-->
     <script>
     let scriptDocumentsSpecific = [
@@ -15,7 +16,7 @@
         '../CSS/ReportarSiniestro.css'//Remplaza por el documento que necesitas, o agrega el numero de documentos que necesitas
     ];
     //Coloca quien debe de tener acceso
-    let rolDoc = "x"
+    let rolDoc = "Conductor"
 
     let inicioSesion = "";
     let rol = "";
@@ -44,7 +45,7 @@
     
     //Solo es temp
     crearCookie("inicioSesion","true",10)
-    crearCookie("rol","Empleado",10)
+    crearCookie("rol","Conductor",10)
     </script>
     <script type="text/javascript" src="../JS/AuthHandler.js"></script>
 </head>
