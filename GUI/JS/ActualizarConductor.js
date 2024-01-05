@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const formulario = document.getElementById('formulario_Actualizar_Conductor');
     const btnAceptar = document.getElementById('btn_Aceptar');
 
     getConductor();
@@ -8,16 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('http://localhost:8000/conductor/658d2fef6aeb2e44b6bc8680')
             .then(response => response.json())
             .then(data => {
-                llenarFormulario(data);
-                habilitarBotonAceptar();
-                agregarManejadorAceptar();
+                fillForm(data);
+                enableButtonAceptar();
+                addActionAcept();
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     }
 
-    function llenarFormulario(data) {
+    function fillForm(data) {
         document.getElementById('nombre').value = data.nombre;
         document.getElementById('apellidoPaterno').value = data.apellidoPaterno;
         document.getElementById('apellidoMaterno').value = data.apellidoMaterno;
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btnAceptar.disabled = false;
     }
 
-    function agregarManejadorAceptar() {
+    function addActionAcept() {
         btnAceptar.addEventListener('click', function () {
             const nombre = document.getElementById('nombre').value;
             const apellidoPaterno = document.getElementById('apellidoPaterno').value;
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const numeroTelefono = document.getElementById('numeroTelefono').value;
             const email = document.getElementById('email').value;
 
-            actualizarDatosConductor({
+            updateConductor({
                 nombre,
                 apellidoPaterno,
                 apellidoMaterno,
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function actualizarDatosConductor(datos) {
+    function updateConductor(datos) {
         fetch('http://localhost:8000/conductor/658d2fef6aeb2e44b6bc8680', {
             method: 'PUT',
             headers: {
