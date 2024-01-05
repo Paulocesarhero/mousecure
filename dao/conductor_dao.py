@@ -57,7 +57,10 @@ class ConductorDao:
             existing_data = data.find_one({"_id": ObjectId(conductor_id)})
             if existing_data is None:
                 logging.error(f"No se encontró el conductor con ID {conductor_id}")                
-                return None            
+                return None  
+            existing_data['id'] = str(existing_data['_id'])
+            print(existing_data['id'])
+            del existing_data['_id']           
             Conductor = existing_data
             return Conductor
         except Exception as e:

@@ -44,3 +44,14 @@ services:
       - MONGO_PORT=27017
     volumes:
       - .:/app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    container_name: nginx
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    volumes:
+      - ./GUI:/usr/share/nginx/html

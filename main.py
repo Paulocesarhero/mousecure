@@ -1,6 +1,7 @@
 import logging
+import magic
 
-from fastapi import Depends, FastAPI, HTTPException, status, Body
+from fastapi import Depends, FastAPI, HTTPException, status, Body, UploadFile,File
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +17,7 @@ from dao.conductor_dao import ConductorDao
 from domain.conductor import Conductor
 
 from domain.empleado import Empleado
+from domain.imagenSiniestro import Imagen
 
 
 from security.Auth_Handler import signJWT
@@ -42,9 +44,9 @@ logging.basicConfig(
 #Paquetes pa el ejemplo
 import time
 from datetime import datetime,timedelta
-import jwt
+from jose import jwt, JWTError
 from pydantic import BaseModel
-from typing import Union
+from typing import Union, List
 from passlib.context import CryptContext
 
 
@@ -306,3 +308,17 @@ async def update_reporte(reporte_id: str, updated_data: dict):
     except Exception as e:
         logging.exception(f"Error en el endpoint de actualización de reporte: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar reporte")    
+    
+
+
+@app.post("/reporte/create",status_code=status.HTTP_201_CREATED)
+async def register_reporte():
+    hola = ReporteDao.generar_string("65961da00027c225290c6c6", "Ulsies", "05/08/2023")
+    print(hola)
+    result = 0
+    if result == 0:
+        return {"mensaje": "Conductor registrado exitosamente"}
+    elif result == -2:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
