@@ -1,4 +1,5 @@
-import time, string, random, jwt
+import time, string, random
+from jose import jwt, JWTError
 from decouple import config
 
 JWT_SECRET = config("SECRET_KEY")
