@@ -3,6 +3,8 @@ FROM python:3.9
 
 WORKDIR /app
 
+RUN rm -rf ./GUI
+
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
