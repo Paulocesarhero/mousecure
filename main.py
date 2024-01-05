@@ -44,7 +44,7 @@ logging.basicConfig(
 #Paquetes pa el ejemplo
 import time
 from datetime import datetime,timedelta
-import jwt,JWTError
+from jose import jwt, JWTError
 from pydantic import BaseModel
 from typing import Union, List
 from passlib.context import CryptContext
