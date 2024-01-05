@@ -3,7 +3,7 @@ from domain.empleado import Empleado
 from pydantic import BaseModel
 
 class Report(BaseModel):
-    id: str
+    folio: str
     fechaDelSiniestro: str
     descripcionDelSiniestro: str
     tipo: str

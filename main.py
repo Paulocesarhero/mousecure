@@ -1,7 +1,7 @@
 import logging
 import magic
 
-from fastapi import Depends, FastAPI, HTTPException, status, Body, UploadFile
+from fastapi import Depends, FastAPI, HTTPException, status, Body, UploadFile,File
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,7 +44,7 @@ logging.basicConfig(
 #Paquetes pa el ejemplo
 import time
 from datetime import datetime,timedelta
-import jwt
+import jwt,JWTError
 from pydantic import BaseModel
 from typing import Union, List
 from passlib.context import CryptContext
@@ -312,9 +312,10 @@ async def update_reporte(reporte_id: str, updated_data: dict):
 
 
 @app.post("/reporte/create",status_code=status.HTTP_201_CREATED)
-async def register_reporte(conductorId:str, new_reporte: Conductor):
-    dao = ConductorDao()
-    result = dao.register_conductor(new_conductor)
+async def register_reporte():
+    hola = ReporteDao.generar_string("65961da00027c225290c6c6", "Ulsies", "05/08/2023")
+    print(hola)
+    result = 0
     if result == 0:
         return {"mensaje": "Conductor registrado exitosamente"}
     elif result == -2:
