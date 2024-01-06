@@ -6,8 +6,10 @@ WORKDIR /usr/share/nginx/html
 
 # Copy the contents of the GUI folder into the container
 COPY ./GUI/html /usr/share/nginx/html
-COPY ./GUI/JS /usr/share/nginx/html
-COPY ./GUI/CSS /usr/share/nginx/html
+COPY ./GUI/JS /usr/share/nginx/JS
+COPY ./GUI/CSS /usr/share/nginx/CSS
+COPY ./GUI/Resources /usr/share/nginx/Resources
+COPY ./GUI/index.html /usr/share/nginx/index.html
 
 # Expose port 80
 EXPOSE 80
