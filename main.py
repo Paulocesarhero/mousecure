@@ -322,3 +322,16 @@ async def register_reporte():
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+    
+
+# Endpoint para obtener reportes por correo de empleado asignado
+@app.get("/reportes/{email}", response_model=list[Report])
+async def get_reportes_by_email(email: str, dao: ReporteDao = Depends()):
+    try:
+        reportes = dao.get_reportes_by_email(email)
+        if reportes is None:
+            raise HTTPException(status_code=404, detail=f"No se encontraron reportes para el correo {email}")
+        return reportes
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de obtención de reportes por correo de empleado asignado: {e}")
+        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")    

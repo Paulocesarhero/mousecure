@@ -94,3 +94,13 @@ class ReporteDao:
         # Combinar todas las partes para formar el nuevo string
         nuevo_string = id_parte + aliasAuto_parte + hora_parte + fecha_numeros
         return nuevo_string
+    
+
+    def get_reportes_by_email(self, email: str):
+        try:
+            data: Collection = self.db.reporte
+            reportes = list(data.find({"empleadoAsignado.email": email}))
+            return [Report(**reporte) for reporte in reportes]
+        except Exception as e:
+            logging.exception(f"Error al obtener reportes por correo de empleado asignado: {e}")
+            return None
