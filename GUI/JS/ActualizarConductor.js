@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const btnAceptar = document.getElementById('btn_Aceptar');
+    const btnCancelar = document.getElementById('btn_Cancelar');
 
     getConductor();
 
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 fillForm(data);
                 enableButtonAceptar();
-                addActionAcept();
+                addActionButtons();
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btnAceptar.disabled = false;
     }
 
-    function addActionAcept() {
+    function addActionButtons() {
         btnAceptar.addEventListener('click', function () {
             const nombre = document.getElementById('nombre').value;
             const apellidoPaterno = document.getElementById('apellidoPaterno').value;
@@ -49,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 numeroTelefono,
                 email,
             });
+        });
+
+        btnCancelar.addEventListener('click', function () {
+            alert("¡Cancelado");
+            return;
         });
     }
 
