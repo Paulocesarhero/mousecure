@@ -29,4 +29,26 @@ class UserDao:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
             return -2
 
+    def check_credentials(self, email: str, password: str) -> dict:
+        try:
+            conductor_data: Collection = self.db.conductores
+            empleado_data: Collection = self.db.empleados
+
+            # Buscar en la colección de Conductor
+            conductor_result = conductor_data.find({"email": email, "password": password})
+
+            # Buscar en la colección de Empleado
+            empleado_result = empleado_data.find({"email": email, "password": password})
+
+            # Verificar si se encontró en alguna de las colecciones
+            if conductor_result.count() > 0:
+                return {"user_type": "conductor", "result": 1}  # Conductor encontrado
+            elif empleado_result.count() > 0:
+                return {"user_type": "empleado", "result": 1}  # Empleado encontrado
+            else:
+                return {"user_type": None, "result": 0}  # Credenciales no encontradas
+        except Exception as e:
+            logging.exception(f"Error al verificar credenciales en la base de datos: {e}")
+            return {"user_type": None, "result": -2}
+
 

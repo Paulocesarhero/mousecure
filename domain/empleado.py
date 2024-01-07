@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from typing import Union
 
 class Empleado(BaseModel):
-    id: str
     nombre: str
     apellidoPaterno: str
     apellidoMaterno: str

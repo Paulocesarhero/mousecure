@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
 
+from dao.empleado_dao import EmpleadoDao
 from dao.reporte_dao import ReporteDao
 from domain.reporte import Report
 from domain.user import User
@@ -41,16 +42,9 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
-def verificar_usuario(nombre_usuario: str, contraseña: str):
-    """Verifica las credenciales del usuario."""
-    if nombre_usuario in db_usuarios and db_usuarios[nombre_usuario].contraseña == contraseña:
-        return True
-    return False
 
-def crear_sesion(response, usuario):
-    """Crea una sesión y establece un valor para el usuario."""
-    sesion = Session.get(response)
-    sesion["usuario"] = usuario.nombre_usuario
+
+
 
 # Endpoint para crear un usuario
 @app.post("/users/",
@@ -190,3 +184,17 @@ async def register_reporte():
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+
+@app.post("/empleado/",summary="Registrar empleado",
+          tags=["Empleado"], status_code=status.HTTP_201_CREATED)
+async def register_empleado(new_empleado: Empleado):
+    dao = EmpleadoDao()
+    result = dao.register_empleado(new_empleado)
+    if result == 0:
+        return {"mensaje": "Empleado registrado exitosamente"}
+    elif result == -2:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+
+
