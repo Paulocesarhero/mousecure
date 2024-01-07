@@ -1,15 +1,15 @@
 # Modelos Pydantic
 from pydantic import BaseModel
-from typing import Union
+from typing import Optional
 
 class Empleado(BaseModel):
-    id: str
-    nombre: str
-    apellidoPaterno: str
-    apellidoMaterno: str
-    fechaIngreso: str
-    activo: bool
-    email: str
-    password: str
-    rol: str
-    tokenSesion: str
+    id: Optional[str] = None
+    nombre: Optional[str] = None
+    apellidoPaterno: Optional[str] = None
+    apellidoMaterno: Optional[str] = None
+    fechaIngreso: Optional[str] = None
+    activo: Optional[bool] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    rol: Optional[str] = None
+    tokenSesion: Optional[str] = None

@@ -16,7 +16,9 @@ from security.security import get_password_hash
 from dao.conductor_dao import ConductorDao
 from domain.conductor import Conductor
 
+from dao.empleado_dao import EmpleadoDAO
 from domain.empleado import Empleado
+
 from domain.imagenSiniestro import Imagen
 
 
@@ -322,3 +324,33 @@ async def register_reporte():
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+    
+#End points de Empleado
+#End-point para registrar un nuevo empleado
+@app.post("/empleado/registrar", status_code=status.HTTP_201_CREATED)
+async def register_empleado(new_Empleado: Empleado):
+    dao = EmpleadoDAO()
+    result = dao.register_empleado(new_Empleado)
+    if result == 0:
+        return {"mensaje": "Empleado registrado exitosamente"}
+    elif result == -2:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar Empleado")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar Empleado")
+
+#End-point para eliminar un empleado
+@app.delete("/empleado/eliminar/{empleado_id}", status_code=status.HTTP_200_OK)
+async def delete_empleado(empleado_id: str):
+    dao = EmpleadoDAO()
+    if dao.delete_empleado(empleado_id):
+        return {"mensaje": "Empleado eliminado exitosamente"}
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
+    
+
+@app.get("/empleados", status_code=status.HTTP_200_OK)
+async def get_all_empleados():
+    dao = EmpleadoDAO()
+    empleados = dao.get_all_empleados()
+    print("Resultado de empleados")
+    return empleados

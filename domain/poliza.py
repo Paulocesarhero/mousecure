@@ -1,9 +1,9 @@
 # Modelos Pydantic
 from pydantic import BaseModel
-from typing import Union
+from typing import Optional
 
 class Poliza(BaseModel):
-    id: str
-    fehcaInicio: str
-    fechaFin: str
-    idPlan: str
+    id: Optional[str] = None
+    fehcaInicio: Optional[str] = None
+    fechaFin: Optional[str] = None
+    idPlan: Optional[str] = None
