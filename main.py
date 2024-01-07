@@ -327,7 +327,7 @@ async def register_reporte():
     
 #End points de Empleado
 #End-point para registrar un nuevo empleado
-@app.post("/empleado/registrar", status_code=status.HTTP_201_CREATED)
+@app.post("/empleados/registrar", status_code=status.HTTP_201_CREATED)
 async def register_empleado(new_Empleado: Empleado):
     dao = EmpleadoDAO()
     result = dao.register_empleado(new_Empleado)
@@ -339,7 +339,7 @@ async def register_empleado(new_Empleado: Empleado):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar Empleado")
 
 #End-point para eliminar un empleado
-@app.delete("/empleado/eliminar/{empleado_id}", status_code=status.HTTP_200_OK)
+@app.delete("/empleados/eliminar/{empleado_id}", status_code=status.HTTP_200_OK)
 async def delete_empleado(empleado_id: str):
     dao = EmpleadoDAO()
     if dao.delete_empleado(empleado_id):
@@ -347,10 +347,38 @@ async def delete_empleado(empleado_id: str):
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
     
-
+#End-point para obtener a todos los empleados (ID, Nombre, apelldios y Tipo y si esta activo)
 @app.get("/empleados", status_code=status.HTTP_200_OK)
 async def get_all_empleados():
     dao = EmpleadoDAO()
     empleados = dao.get_all_empleados()
-    print("Resultado de empleados")
     return empleados
+
+#End-point para obtener un empleado (Todo menos paassword y tokensesion)
+@app.get("/empleados/{empleado_id}", status_code=status.HTTP_200_OK)
+async def get_empleado_activo_by_id(empleado_id: str):
+    dao = EmpleadoDAO()
+    empleado = dao.get_empleado_activo_by_id(empleado_id)
+    if empleado:
+        return empleado
+    else:
+        return {"mensaje": "No hay empleados disponibles"}
+# Endpoint para modificar un empleado
+@app.put("/empleado/modificar/{empleado_id}", status_code=status.HTTP_200_OK)
+async def update_empleado(empleado_id: str, updated_data: dict):
+    dao = EmpleadoDAO()
+    try:
+        result = dao.update_empleado(empleado_id, updated_data)
+        if result == 0:
+            return {"mensaje": "Empleado actualizado exitosamente"}
+        elif result == 1:
+            return {"mensaje": "El Empleado ya tiene los datos proporcionados, no se realizó ninguna actualización"}
+        elif result == -1:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
+        elif result == -2:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al actualizar Empleado")
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar Empleado")
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de actualización de Empleado: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar Empleado")
