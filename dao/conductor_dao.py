@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import security.security
 from domain.conductor import Conductor
 from connection.mongo_conector import Conector
@@ -28,7 +30,8 @@ class ConductorDao:
             data: Collection = self.db.conductores
             hashed_password = security.security.get_password_hash(new_conductor.password)
             new_conductor.password = hashed_password
-            conductor_dict = new_conductor.dict()
+            new_conductor.fechaNacimiento = datetime.combine(new_conductor.fechaNacimiento, datetime.min.time())
+            conductor_dict = new_conductor.model_dump()
             data.insert_one(conductor_dict)
             return 0
         except Exception as e:

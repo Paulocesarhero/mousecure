@@ -4,9 +4,11 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
 
+import security
 from dao.empleado_dao import EmpleadoDao
 from dao.reporte_dao import ReporteDao
 from domain.reporte import Report
+from domain.token import Token
 from domain.user import User
 
 from dao.user_dao import UserDao
@@ -26,6 +28,8 @@ from pydantic import BaseModel
 from typing import Union, List
 from passlib.context import CryptContext
 
+from security.security import create_access_token
+
 app = FastAPI(title="Mousecure", version="ALPHA")
 
 app.add_middleware(
@@ -42,40 +46,62 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
+# Dependencia para obtener el token de autorización
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
+# Ruta para obtener un token JWT (iniciar sesión)
+@app.post("/token", tags=["Login"], response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """
+    Verificar login del usuario
 
+    Parámetros:
+    - form_data: objeto OAuth2PasswordRequestForm: formulario de solicitud de contraseña con los siguientes campos:
+        - username (str): En este caso será el email.
+        - password (str): contraseña del usuario.
 
-# Endpoint para crear un usuario
-@app.post("/users/",
-          status_code=status.HTTP_201_CREATED)
-async def create_user(user: User):
+    Retorna:
+    - barrer token con los siguiente datos encriptados
+        - email (str)
+        - id (str) de la bd mongo
+        - tipo (str) empleado o conductor
+
+    Excepciones:
+    - HTTPException(status_code=401, detail="Usuario o contraseña incorrectos"): si el usuario no existe o la contraseña es incorrecta.
+    """
     dao = UserDao()
-    result = dao.create_user_in_db(user)
-    if result == 0:
-        return {"mensaje": f"Usuario creado: Ulises"}
-    elif result == -1:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario existente en la BD")
+    result = dao.check_credentials(form_data.username, form_data.password)
+
+    if result["result"] == 1:
+        user_type = result["user_type"]
+        if user_type == "conductor" or user_type == "empleado":
+            # Realiza acciones específicas para conductores o empleados
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(
+                data={"email": form_data.username,
+                      "tipo": user_type,
+                      "id": result["user_id"]
+                      }, expires_delta=access_token_expires)
+            return {"access_token": access_token, "token_type": "bearer"}
+        else:
+            raise HTTPException(status_code=401, detail="Tipo de usuario no válido")
     else:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al crear usuario")
+        raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
 
 
-@app.post("/report/",
-          status_code=status.HTTP_201_CREATED)
-async def create_report_employee(new_report: Report):
-    dao = ReporteDao()
-    result = dao.create_report_with_Employee(new_report)
-    if result == 0:
-        return {"mensaje": f"Reporte creado: Reporte exitoso"}
-    elif result == -1:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario existente en la BD")
-    else:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al crear usuario")
 
+
+
+@app.get("/protected",summary="Obtiene los datos actuales de la sesión",
+          tags=["Login"])
+async def get_protected_data(current_user: dict = Depends(security.security.get_current_user)):
+    return {"message": "You have access to this protected data!", "current_user": current_user}
 
 # Endpoint para modificar un conductor
-@app.put("/conductor/{conductor_id}",summary="Modificar conductor",
-          tags=["Conductor"], status_code=status.HTTP_200_OK)
+@app.put("/conductor/{conductor_id}", summary="Modificar conductor",
+         tags=["Conductor"], status_code=status.HTTP_200_OK)
 async def update_conductor(conductor_id: str, updated_data: dict):
     dao = ConductorDao()
     try:
@@ -99,7 +125,7 @@ async def update_conductor(conductor_id: str, updated_data: dict):
 
 
 # Endpoint-Driver para registrar un nuevo conductor (Eliminar o modificar de ser necesario)
-@app.post("/conductor/",summary="Registrar conductor",
+@app.post("/conductor/", summary="Registrar conductor",
           tags=["Conductor"], status_code=status.HTTP_201_CREATED)
 async def register_conductor(new_conductor: Conductor):
     dao = ConductorDao()
@@ -113,8 +139,8 @@ async def register_conductor(new_conductor: Conductor):
 
 
 # Endpoint para obtener un conductor por ID
-@app.get("/conductor/{conductor_id}",summary="Obtener id conductor",
-          tags=["Conductor"], response_model=Conductor)
+@app.get("/conductor/{conductor_id}", summary="Obtener id conductor",
+         tags=["Conductor"], response_model=Conductor)
 async def get_conductor_by_id(conductor_id: str):
     dao = ConductorDao()
     try:
@@ -132,8 +158,8 @@ async def get_conductor_by_id(conductor_id: str):
 
 
 # Endpoint para obtener todos los reportes
-@app.get("/reportes",summary="Obtener reporte",
-          tags=["Reporte"], response_model=list[Report])
+@app.get("/reportes", summary="Obtener reporte",
+         tags=["Reporte"], response_model=list[Report])
 async def get_all_reportes():
     dao = ReporteDao()
     try:
@@ -149,8 +175,8 @@ async def get_all_reportes():
 
 
 # Endpoint para actualizar el reporte
-@app.put("/reporte/{reporte_id}",summary="Actualizar reporte",
-          tags=["Reporte"], status_code=status.HTTP_200_OK)
+@app.put("/reporte/{reporte_id}", summary="Actualizar reporte",
+         tags=["Reporte"], status_code=status.HTTP_200_OK)
 async def update_reporte(reporte_id: str, updated_data: dict):
     dao = ReporteDao()
     try:
@@ -172,7 +198,7 @@ async def update_reporte(reporte_id: str, updated_data: dict):
                             detail="Error interno del servidor al actualizar reporte")
 
 
-@app.post("/reporte/create",summary="Crear reporte",
+@app.post("/reporte/create", summary="Crear reporte",
           tags=["Reporte"], status_code=status.HTTP_201_CREATED)
 async def register_reporte():
     hola = ReporteDao.generar_string("65961da00027c225290c6c6", "Ulsies", "05/08/2023")
@@ -185,7 +211,8 @@ async def register_reporte():
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
 
-@app.post("/empleado/",summary="Registrar empleado",
+
+@app.post("/empleado/", summary="Registrar empleado",
           tags=["Empleado"], status_code=status.HTTP_201_CREATED)
 async def register_empleado(new_empleado: Empleado):
     dao = EmpleadoDao()
@@ -196,5 +223,3 @@ async def register_empleado(new_empleado: Empleado):
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
-
-
