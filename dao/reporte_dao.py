@@ -104,3 +104,36 @@ class ReporteDao:
         except Exception as e:
             logging.exception(f"Error al obtener reportes por correo de empleado asignado: {e}")
             return None
+        
+
+    def get_reporte_by_folio(self, folio: str):
+        try:
+            data: Collection = self.db.reporte
+            reporte = data.find_one({"folio": folio})
+            if reporte is not None:
+                return Report(**reporte)
+            else:
+                return None
+        except Exception as e:
+            logging.exception(f"Error al obtener reporte por folio de la base de datos: {e}")
+            return None
+
+        
+    def update_reporte_by_folio(self, folio: str, updated_data: dict):
+        try:
+            print(folio)
+            print(updated_data)
+            data: Collection = self.db.reporte
+            print(data)
+            existing_data = data.find_one({"folio": folio})
+            print(existing_data)
+            if existing_data is None:
+                return -1
+            result = data.update_one({"folio": folio}, {"$set": updated_data})
+            if result.modified_count > 0:
+                return 0
+            else:
+                return 1
+        except Exception as e:
+            logging.exception(f"Error al actualizar reporte por folio en la base de datos: {e}")
+            return -2

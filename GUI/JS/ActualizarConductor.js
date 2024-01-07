@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     getConductor();
 
     function getConductor() {
-        fetch('http://localhost:8000/conductor/658d2fef6aeb2e44b6bc8680')
+        fetch('http://localhost:8000/conductor/6598bb168e83d9b74d84c003')
             .then(response => response.json())
             .then(data => {
                 fillForm(data);
@@ -53,25 +53,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         btnCancelar.addEventListener('click', function () {
-            alert("¡Cancelado");
-            return;
+            alert("¡Cancelado¡ No se preocupe la cción fue cancelada");
         });
     }
 
     function updateConductor(datos) {
-        fetch('http://localhost:8000/conductor/658d2fef6aeb2e44b6bc8680', {
+        fetch('http://localhost:8000/conductor/6598bb168e83d9b74d84c003', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(datos),
         })
-            .then(response => response.json())
+            .then(response => response.json())            
             .then(data => {
-                console.log('Datos actualizados:', data);
+                alert("Su información se actualizo de manera exitosa");                
             })
             .catch(error => {
-                console.error('Error en la actualización:', error);
+                alert("No se pudo actualizar intentelo mas tarde");                
             });
     }
 });

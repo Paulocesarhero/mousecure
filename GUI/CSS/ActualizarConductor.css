@@ -1,14 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&family=Roboto&family=Roboto+Mono&display=swap');
-/*Estilo predetermiando para todos los doc*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-/*Estilo predetermiando para todos los doc*/
 
-
-/*Estructura del contendio principal*/
 main{
     display:grid;
     grid-template-rows: 1fr 4fr;
@@ -16,7 +12,6 @@ main{
 }
 
 
-/*Estilos para los contenedores*/
 #titulo_Pagina{
     color: #043873;
     font-size: 64px;
@@ -92,8 +87,6 @@ main{
     color:#49454F;
 }
 
-
-/*Estilo de componentes*/
 select{
     height: 40px;
     width: 100%;
@@ -217,7 +210,6 @@ button{
     cursor:pointer;
 }
 
-/*Contenedores Responsivos*/
 @media screen and (max-width: 525px) {
 
     #contenedor_Combo_Boxes, #contenedor_Areas{
