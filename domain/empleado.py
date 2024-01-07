@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class Empleado(BaseModel):
-    id: Optional[str] = None
+    id: str
     nombre: Optional[str] = None
     apellidoPaterno: Optional[str] = None
     apellidoMaterno: Optional[str] = None

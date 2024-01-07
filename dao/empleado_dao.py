@@ -50,30 +50,20 @@ class EmpleadoDAO:
 
     def get_all_empleados(self) -> List[Empleado]:
         try:
-
-
             data: Collection = self.db.empleados
             # Especificar campos para incluir en los resultados
             empleados_crudos = list(data.find({}, {"_id": 1, "nombre": 1, "apellidoPaterno": 1, "apellidoMaterno": 1}))
-            print("Empleados crudos:", empleados_crudos)  # Impresión para depuración
             empleados = []
-            # Convertir _id de MongoDB a id en el modelo Empleado
             for empleado in empleados_crudos:
-
-                empleado['id'] = str(empleado.pop('_id'))
+                # Convertir _id de MongoDB a id en el modelo Empleado
+                empleado['id'] = str(empleado['_id'])
                 del empleado['_id']
-                empleados.append(Empleado(**empleado))
-
-
-            #data: Collection = self.db.empleados
-            #empleados_crudos = list(data.find())
-            #empleados = []
-            #for empleado_crudo in empleados_crudos:
-                #empleado_crudo['id'] = str(empleado_crudo['_id'])
-                #del empleado_crudo['_id']
-                #empleados.append(Empleado(**empleado_crudo))
-
-
+                try:
+                    empleado_modelo = Empleado(**empleado)
+                    empleados.append(empleado_modelo)
+                    print("Empleado modelo:", empleado_modelo)
+                except Exception as e:
+                    print(f"Error al convertir empleado a modelo: {e}")
             return empleados
         except Exception as e:
             logging.exception(f"Error al obtener empleados de la base de datos: {e}")
