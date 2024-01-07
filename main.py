@@ -322,3 +322,53 @@ async def register_reporte():
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+    
+
+# Endpoint para obtener reportes por correo de empleado asignado
+@app.get("/reportes/{email}", response_model=list[Report])
+async def get_reportes_by_email(email: str, dao: ReporteDao = Depends()):
+    try:
+        reportes = dao.get_reportes_by_email(email)
+        if reportes is None:
+            raise HTTPException(status_code=404, detail=f"No se encontraron reportes para el correo {email}")
+        return reportes
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de obtención de reportes por correo de empleado asignado: {e}")
+        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")
+
+
+# Endpoint para obtener reportes por folio
+@app.get("/reporte/{folio}", response_model=Report)
+async def get_reporte_by_folio(folio: str, dao: ReporteDao = Depends()):
+    try:
+        reporte = dao.get_reporte_by_folio(folio)
+        if reporte is not None:
+            return reporte
+        else:
+            raise HTTPException(status_code=404, detail=f"No se encontró el reporte con folio {folio}")
+
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de obtención de reporte por folio: {e}")
+        raise HTTPException(status_code=500, detail="Error del servidor al recuperar el reporte por folio")    
+
+
+# Endpoint para actualizar reportes por folio
+@app.put("/reportebyfolio/{folio}", status_code=status.HTTP_200_OK)
+async def update_reporte_by_folio(folio: str, updated_data: dict, dao: ReporteDao = Depends()):
+    try:
+        result = dao.update_reporte_by_folio(folio, updated_data)
+        if result == 0:
+            return {"mensaje": f"Reporte con folio {folio} actualizado exitosamente"}
+        elif result == 1:
+            return {"mensaje": f"No se realizó ninguna actualización en el reporte con folio {folio}"}
+        elif result == -1:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No se encontró el reporte con folio {folio}")
+        elif result == -2:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error al actualizar reporte")
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar reporte")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de actualización de reporte por folio: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar reporte por folio")
