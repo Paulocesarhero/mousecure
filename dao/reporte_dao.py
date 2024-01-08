@@ -53,7 +53,15 @@ class ReporteDao:
         except Exception as e:
             self.logger.exception(f"Error al obtener todos los reportes de la base de datos: {e}")
             return None    
-        
+
+    def get_reportes_without_empleado(self):
+        try:
+            data: Collection = self.db.reporte
+            reportes = list(data.find({"empleado": None}))
+            return [Report(**reporte) for reporte in reportes]
+        except Exception as e:
+            self.logger.exception(f"Error al obtener los reportes sin empleado de la base de datos: {e}")
+            return None   
 
     def update_reporte(self, reporte_id: str, updated_data: dict) -> int:
         try:

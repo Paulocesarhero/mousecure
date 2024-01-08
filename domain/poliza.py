@@ -7,3 +7,4 @@ class Poliza(BaseModel):
     fehcaInicio: str
     fechaFin: str
     idPlan: str
+    idVehiculo: str
