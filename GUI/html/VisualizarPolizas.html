@@ -69,10 +69,42 @@
                     </a>
                     <ul class="dropdown-content">
                         <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
-                                    weight="32px" />Reportes Sin Asignación</a></li>
+                                    weight="32px" />Mis reportes</a></li>
+                        <li><a href="../html/ReportarSiniestro.html"><img
+                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                    weight="32px" />Reportar Siniestros</a></li>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Pólizas
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis Pólizas</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
+                                    weight="32px" />Comprar Pólizas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Contactos
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
+                                    weight="32px" />Correo Electrónico</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
+                                    weight="32px" />Número de celular</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a tabindex="0">
                         <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
@@ -99,9 +131,12 @@
                     <li class="sidebar-header">Reportes</li>
                     <hr>
                     <li class="sidebar-options"><a href="#" tabindex="-1"><img
-                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Asignar
+                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Mis
                             reportes</a></li>
                     <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                weight="32px" />Reportar Siniestros</a></li>
                     <hr>
                     &nbsp;
                     <li class="sidebar-header">Polizas</li>
@@ -136,65 +171,39 @@
         </nav>
     </header>
     <main>
-        <main>
-            <div id="form-container" style="display: none;">
-                <form id="report-form">
-                    <!-- Los campos del formulario se agregarán aquí -->
-                </form>
-                <button id="back-button">Regresar</button>
-                <button id="assign-button">Asignar</button>
-            </div>
-            <table id="reports-table">
-                <thead>
-                    <tr>
-                        <th>Folio</th>
-                        <th>Fecha del Siniestro</th>
-                        <th>Descripción del Siniestro</th>
-                        <th>Tipo</th>
-                        <th>Fecha de Dictaminación</th>
-                        <th>Descripción Dictamen</th>
-                        <th>Dictamen</th>
-                        <th>Ubicación</th>
-                        <th>Empleado Asignado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Las filas de la tabla se agregarán aquí -->
-                </tbody>
-            </table>
-        </main>
+        <table id="vehicles-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Modelo</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Placas</th>
+                    <th>ID Conductor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de la tabla se agregarán aquí -->
+            </tbody>
+        </table>
     </main>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
-            loadTableData();
-        });
+            var idConductor = '1'; // Reemplaza esto con el ID del conductor
 
-        // Agrega un controlador de eventos click al botón de regresar
-        document.querySelector('#back-button').addEventListener('click', function () {
-            document.querySelector('#form-container').style.display = 'none';
-            document.querySelector('#reports-table').style.display = 'table';
-            loadTableData();
-        });
-
-        function loadTableData() {
-            fetch('http://localhost:8000/reportes')
+            fetch(`http://localhost:8000/vehiculos/${idConductor}`)
                 .then(response => response.json())
-                .then(reportes => {
-                    var tableBody = document.querySelector('#reports-table tbody');
+                .then(vehiculos => {
+                    var tableBody = document.querySelector('#vehicles-table tbody');
 
-                    // Limpia la tabla antes de agregar los nuevos datos
-                    tableBody.innerHTML = '';
-
-                    // Filtra los reportes para obtener solo los que tienen empleadoAsignado nulo
-                    var filteredReportes = reportes.filter(reporte => reporte.empleadoAsignado === null);
-
-                    filteredReportes.forEach(reporte => {
+                    vehiculos.forEach(vehiculo => {
                         var row = document.createElement('tr');
 
-                        ['folio', 'fechaDelSiniestro', 'descripcionDelSiniestro', 'tipo', 'fechaDeDictaminacion', 'descripcionDictamen', 'dictamen', 'ubicacion', 'empleadoAsignado'].forEach(key => {
+                        ['id', 'modelo', 'marca', 'color', 'placas', 'idConductor'].forEach(key => {
                             var cell = document.createElement('td');
-                            cell.textContent = reporte[key] || '';
+                            cell.textContent = vehiculo[key] || '';
                             row.appendChild(cell);
                         });
 
@@ -202,33 +211,8 @@
                     });
                 })
                 .catch(error => console.error('Error:', error));
-
-
-        }
-        // Agrega un controlador de eventos click a las filas de la tabla
-        document.querySelector('#reports-table tbody').addEventListener('click', function (event) {
-            if (event.target.tagName === 'TD') {
-                var rowData = Array.from(event.target.parentNode.children).map(td => td.textContent);
-                showForm(rowData);
-            }
         });
 
-        function showForm(rowData) {
-            // Asume que el folio es el primer elemento en rowData
-            var folio = rowData[0];
-
-            // Crea una etiqueta para mostrar el folio
-            var label = document.createElement('label');
-            label.textContent = 'Folio: ' + folio;
-
-            // Limpia el formulario antes de agregar la nueva etiqueta
-            var form = document.querySelector('#report-form');
-            form.innerHTML = '';
-            form.appendChild(label);
-
-            document.querySelector('#reports-table').style.display = 'none';
-            document.querySelector('#form-container').style.display = 'block';
-        }
     </script>
 </body>
 

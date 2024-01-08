@@ -105,7 +105,7 @@ class EmpleadoDAO:
             logging.exception(f"Error al obtener empleado de la base de datos: {e}")
             return None
     
-    def get_all_empleados(self):
+    def get_all_empleados_v(self):
         try:
             data: Collection = self.db.empleados
             empleados = list(data.find())
