@@ -217,7 +217,6 @@ async def register_reporte(new_report: Report):
 @app.post("/reporte/create/imagen", summary="Guardar imagen reporte",
           tags=["Reporte"], status_code=status.HTTP_201_CREATED)
 async def register_reporte_imagen(image: UploadFile = File(...), idmongo: str = 'default'):
-
     # Procesar imágenes
     manager = FManager()
     if await manager.guardar_imagen(image, idmongo):

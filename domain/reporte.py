@@ -9,8 +9,9 @@ class Report(BaseModel):
     fechaDelSiniestro: Optional[str] = None
     descripcionDelSiniestro: Optional[str] = None
     tipo: Optional[str] = None
+    vehiculo: Optional[str] = None
+    ubicacion: Optional[str] = None
+    empleadoAsignado: Optional[str] = None
     fechaDeDictaminacion: Optional[str] = None
     descripcionDictamen: Optional[str] = None
     dictamen: Optional[str] = None
-    ubicacion: Optional[str] = None
-    empleadoAsignado: Optional[str] = None

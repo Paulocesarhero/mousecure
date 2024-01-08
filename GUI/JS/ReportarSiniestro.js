@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
         "../Resources/Icons/OperacionAdvertencia- Color.png"
     ];//Agrega las imagenes a tu gusto
 
+    const correoEmpleados = [
+        "ulisesram19@gmail.com",
+        "ulises_ram19@hotmial.com",
+        "LeoRam19@gmail.com"
+    ];
+
+    var coordenadas = ""
+
+
     document.getElementById('activar_Carrusel').addEventListener('change', function() {
         document.getElementById('carrusel_Fotos').style.display = this.checked ? 'flex' : 'none';
         document.getElementById('subir_Foto').style.display = this.checked ? 'flex' : 'none';
@@ -32,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         actualizarEstadoBoton();
     });
     
+    geoFindMe()
 
     //Las coordenadas paps
     function geoFindMe() {
@@ -39,11 +49,16 @@ document.addEventListener('DOMContentLoaded', function() {
             navigator.geolocation.getCurrentPosition(function(position) {
               console.log("Latitude: " + position.coords.latitude);
               console.log("Longitude: " + position.coords.longitude);
+              coordenadas = position.coords.latitude+" "+position.coords.longitude+""
+              console.log(coordenadas)
+              return coordenadas
             }, function(error) {
-              console.error("Error Code = " + error.code + " - " + error.message);
+              coordenadas = "Error Code = " + error.code + " - " + error.message;
+              return coordenadas              
             });
           } else {
-            console.log("Geolocation is not supported by this browser.");
+            coordenadas = "Geolocation is not supported by this browser."
+            return coordenadas
           }
     }
     /*
@@ -79,10 +94,19 @@ document.addEventListener('DOMContentLoaded', function() {
     Mostrar Dialgo -> Usuario presiona aceptar Operacion -> Se muestra el dialogo de repesua en especifico*/
     document.getElementById('btn_Aceptar').addEventListener('click', async function() {
         const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("enviar_Reporte");
+        if(resultadoDialogo){
+            crearReporteApi()
+        }
+
+
+
+
+
+       /* const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("enviar_Reporte");
         if (resultadoDialogo) {
             var respuestaEjemplo = ejecutarUnallamadaEnespeficicoAlApi();
             console.log(respuestaEjemplo) ;
-            /*Si no quieres que se devuelva un cuadro de confirmacion, como el logout no agregues uses el metodo de dispararDialogoResultado*/
+            //Si no quieres que se devuelva un cuadro de confirmacion, como el logout no agregues uses el metodo de dispararDialogoResultado
             switch (respuestaEjemplo) {
                 case 1:
                     dispararDialogoResultado(
@@ -111,7 +135,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 default:                        
                     break;
             }
-        }
+        }*/
+
+
+
     });
 
     /*Las funciones deben de ser Asyn para poder realizar el proceso de:
@@ -170,6 +197,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.floor(Math.random() * 3) + 1;
     }
 
+
+
+    function obtenerCorreoAleatorio() {
+        const indiceAleatorio = Math.floor(Math.random() * correoEmpleados.length);
+        return correoEmpleados[indiceAleatorio];
+    }
+
     /*Funciones para mostrar los dialogos respuestas y realizar una operacion si se confirma la operacion*/
     /*Con estas operaciones puedes disparar cuadros de dialogo y mostrar cuadros de repuestas*/
     function dispararDialogoResultado(src,encabezado,contenido,boton,isAlerta) {
@@ -200,4 +234,129 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
     }
+
+
+    function crearReporteApi(){
+        var fechaActual = new Date();
+        var reportData = {
+            fechaDelSiniestro: (fechaActual.getDate() < 10 ? '0' : '') + fechaActual.getDate() + '/' + ((fechaActual.getMonth() + 1) < 10 ? '0' : '') + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear(),
+            descripcionDelSiniestro: document.getElementById('declaracion_Textarea').value,
+            tipo: document.getElementById('tipo_Siniestro_Combobox').value,
+            vehiculo: document.getElementById('vehiculo_Comboxbox').value,
+            ubicacion: coordenadas,
+            empleadoAsignado: obtenerCorreoAleatorio()
+        };
+        
+        // Envía los datos a la API para crear el reporte
+        fetch('http://localhost:8000/reporte/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reportData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Procesar la respuesta
+            var idmongo = data.mensaje.split(" ")[2]; // Asumiendo que el mensaje es "Reporte registrado {idmongo}"
+            
+            
+            // Si se seleccionó el checkbox y se obtuvo el idmongo, enviar otra solicitud POST
+            if (activarCarruselCheckbox.checked && idmongo) {
+                
+                var image = document.getElementById('subir_Foto').files[0];
+                var formData = new FormData();
+                formData.append('image', image);
+                formData.append('idmongo', idmongo);
+
+                
+                fetch('http://localhost:8000/reporte/create/imagen?', {
+                    method: 'POST',
+                    body:formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Procesar la respuesta de la imagen
+                })
+                .catch(error => console.error('Error al registrar imagen:', error));
+            }
+        })
+        .catch(error => {
+            console.error('Error al registrar reporte:', error);
+        });
+    }
+
+
+
+    var form = document.getElementById('formulario_Siniestro');
+
+    form.onsubmit = function(event) {
+        event.preventDefault();
+
+        var reportData = {
+            fechaDelSiniestro: (fechaActual.getDate() < 10 ? '0' : '') + fechaActual.getDate() + '/' + ((fechaActual.getMonth() + 1) < 10 ? '0' : '') + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear(),
+            descripcionDelSiniestro: document.getElementById('declaracion_Textarea').value,
+            tipo: document.getElementById('tipo_Siniestro_Combobox').value,
+            vehiculo: document.getElementById('vehiculo_Comboxbox').value,
+            ubicacion: geoFindMe(),
+            empleadoAsignado: obtenerCorreoAleatorio()
+        };
+
+        // Envía los datos a la API para crear el reporte
+        fetch('http://localhost:8000/reporte/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reportData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Procesar la respuesta
+            var idmongo = data.mensaje.split(" ")[2]; // Asumiendo que el mensaje es "Reporte registrado {idmongo}"
+            
+            // Si se seleccionó el checkbox y se obtuvo el idmongo, enviar otra solicitud POST
+            if (activarCarruselCheckbox.checked && idmongo) {
+                var image = document.getElementById('subir_Foto').files[0];
+                var formData = new FormData();
+                formData.append('image', image);
+                formData.append('idmongo', idmongo);
+
+                fetch('/reporte/create/imagen', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Procesar la respuesta de la imagen
+                })
+                .catch(error => console.error('Error al registrar imagen:', error));
+            }
+        })
+        .catch(error => {
+            console.error('Error al registrar reporte:', error);
+        });
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });

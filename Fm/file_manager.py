@@ -12,7 +12,6 @@ class FManager:
             image_path = f"{self.rutaBiblioteca}/{nombre_documento}.png"
             with open(image_path, "wb") as buffer:
                 buffer.write(await documento.read())
-
             return True
 
         except Exception as e:
