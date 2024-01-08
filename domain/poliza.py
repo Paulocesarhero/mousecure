@@ -1,6 +1,6 @@
 # Modelos Pydantic
 from pydantic import BaseModel
-from typing import Union
+from typing import Optional
 
 class Poliza(BaseModel):
     id: str

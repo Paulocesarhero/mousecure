@@ -9,7 +9,7 @@ from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
 
 import security
-from dao.empleado_dao import EmpleadoDao
+from dao.empleado_dao import  EmpleadoDAO
 from dao.reporte_dao import ReporteDao
 from dao.poliza_dao import PolizaDao
 from dao.vehiculo_dao import VehiculoDao
@@ -204,15 +204,19 @@ async def update_reporte(reporte_id: str, updated_data: dict):
 
 @app.post("/reporte/create", summary="Crear reporte",
           tags=["Reporte"], status_code=status.HTTP_201_CREATED)
-async def register_reporte():
-    hola = ReporteDao.generar_string("65961da00027c225290c6c6", "Ulsies", "05/08/2023")
-    print(hola)
+async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: str, desDictamen: str, fechaSiniestro: str, arrayImagenes: list):
+    dao = ReporteDao()
+    folio = dao.generar_Folio(id_Conductor, aliasVehiculo, fechaSiniestro)
+    # Procesar imágenes
+    dao.procesarImagenes(folio, arrayImagenes)
+    print(folio)
     result = 0
     if result == 0:
-        return {"mensaje": "Conductor registrado exitosamente"}
+        return {"mensaje": "Reporte registrado exitosamente"}
     elif result == -2:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
     else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar reporte")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
     
 # Endpoint-Vehiculo para registrar un nuevo vehiculo 
@@ -291,84 +295,61 @@ async def get_poliza_by_idVehiculo(vehiculo_id: str):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al obtener poliza por ID")
        
 
-
-@app.post("/empleado/", summary="Registrar empleado",
-          tags=["Empleado"], status_code=status.HTTP_201_CREATED)
-async def register_empleado(new_empleado: Empleado):
-    dao = EmpleadoDao()
-    result = dao.register_empleado(new_empleado)
+#End points de Empleado
+#End-point para registrar un nuevo empleado
+@app.post("/empleados/registrar", status_code=status.HTTP_201_CREATED)
+async def register_empleado(new_Empleado: Empleado):
+    dao = EmpleadoDAO()
+    result = dao.register_empleado(new_Empleado)
     if result == 0:
         return {"mensaje": "Empleado registrado exitosamente"}
     elif result == -2:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar Empleado")
     else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
-    
-#Endpoint para consultar todos los empleados
-@app.get("/empleados", summary="Consultar empleados",
-         tags=["empleados"], response_model=list[Empleado])
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar Empleado")
+
+#End-point para eliminar un empleado
+@app.delete("/empleados/eliminar/{empleado_id}", status_code=status.HTTP_200_OK)
+async def delete_empleado(empleado_id: str):
+    dao = EmpleadoDAO()
+    if dao.delete_empleado(empleado_id):
+        return {"mensaje": "Empleado eliminado exitosamente"}
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
+
+#End-point para obtener a todos los empleados (ID, Nombre, apelldios y Tipo y si esta activo)
+@app.get("/empleados", status_code=status.HTTP_200_OK)
 async def get_all_empleados():
-    dao = EmpleadoDao()
+    dao = EmpleadoDAO()
+    empleados = dao.get_all_empleados()
+    return empleados
+
+#End-point para obtener un empleado (Todo menos paassword y tokensesion)
+@app.get("/empleados/{empleado_id}", status_code=status.HTTP_200_OK)
+async def get_empleado_activo_by_id(empleado_id: str):
+    dao = EmpleadoDAO()
+    empleado = dao.get_empleado_activo_by_id(empleado_id)
+    if empleado:
+        return empleado
+    else:
+        return {"mensaje": "No hay empleado disponibles"}
+
+# Endpoint para modificar y desactivar a un empleado
+@app.put("/empleado/modificar/{empleado_id}", status_code=status.HTTP_200_OK)
+async def update_empleado(empleado_id: str, updated_data: dict):
+    dao = EmpleadoDAO()
     try:
-        empledos = dao.get_all_empleados()
-        if empledos is None:
-            raise HTTPException(status_code=404, detail="No se encontraron empleados")
-        return empledos
-    except HTTPException as exceptionHTTP:
-        raise exceptionHTTP
-    except Exception as exceptionHTTP:
-        logging.exception(f"Error en la obtención de todos los empleados: {exceptionHTTP}")
-        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los empleados")
-
-# Endpoint para obtener reportes por correo de empleado asignado
-@app.get("/reportes/{email}", response_model=list[Report])
-async def get_reportes_by_email(email: str, dao: ReporteDao = Depends()):
-    try:
-        reportes = dao.get_reportes_by_email(email)
-        if reportes is None:
-            raise HTTPException(status_code=404, detail=f"No se encontraron reportes para el correo {email}")
-        return reportes
-    except Exception as e:
-        logging.exception(f"Error en el endpoint de obtención de reportes por correo de empleado asignado: {e}")
-        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")
-
-
-# Endpoint para obtener reportes por folio
-@app.get("/reporte/{folio}", response_model=Report)
-async def get_reporte_by_folio(folio: str, dao: ReporteDao = Depends()):
-    try:
-        reporte = dao.get_reporte_by_folio(folio)
-        if reporte is not None:
-            return reporte
-        else:
-            raise HTTPException(status_code=404, detail=f"No se encontró el reporte con folio {folio}")
-
-    except Exception as e:
-        logging.exception(f"Error en el endpoint de obtención de reporte por folio: {e}")
-        raise HTTPException(status_code=500, detail="Error del servidor al recuperar el reporte por folio")
-
-
-# Endpoint para actualizar reportes por folio
-@app.put("/reportebyfolio/{folio}", status_code=status.HTTP_200_OK)
-async def update_reporte_by_folio(folio: str, updated_data: dict, dao: ReporteDao = Depends()):
-    try:
-        result = dao.update_reporte_by_folio(folio, updated_data)
+        result = dao.update_empleado(empleado_id, updated_data)
         if result == 0:
-            return {"mensaje": f"Reporte con folio {folio} actualizado exitosamente"}
+            return {"mensaje": "Empleado actualizado exitosamente"}
         elif result == 1:
-            return {"mensaje": f"No se realizó ninguna actualización en el reporte con folio {folio}"}
+            return {"mensaje": "El Empleado ya tiene los datos proporcionados, no se realizó ninguna actualización"}
         elif result == -1:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No se encontró el reporte con folio {folio}")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
         elif result == -2:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error al actualizar reporte")
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al actualizar Empleado")
         else:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar reporte")
-    except HTTPException as e:
-        raise e
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar Empleado")
     except Exception as e:
-        logging.exception(f"Error en el endpoint de actualización de reporte por folio: {e}")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar reporte por folio")
-    
-
-
-       
+        logging.exception(f"Error en el endpoint de actualización de Empleado: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar Empleado")

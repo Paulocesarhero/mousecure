@@ -1,3 +1,5 @@
+
+
 window.onload = function() {
     rol = leerCookie("rol")
     let navBarUser = document.getElementsByTagName("header")[0].cloneNode(true);

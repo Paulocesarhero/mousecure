@@ -2,16 +2,17 @@
 from datetime import date
 
 from pydantic import BaseModel
-from typing import Union
+from typing import Optional
 
 class Conductor(BaseModel):
-    nombre: str
-    apellidoPaterno: str
-    apellidoMaterno: str
-    fechaNacimiento: date
-    numeroLicencia: str
-    numeroTelefono: str
-    activo: bool
-    email: str
-    password: str
-    tokenSesion: str
+    id: Optional[str] = None
+    nombre: Optional[str] = None
+    apellidoPaterno: Optional[str] = None
+    apellidoMaterno: Optional[str] = None
+    fechaNacimiento: Optional[str] = None
+    numeroLicencia: Optional[str] = None
+    numeroTelefono: Optional[str] = None
+    activo: Optional[bool] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    tokenSesion: Optional[str] = None
