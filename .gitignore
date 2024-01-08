@@ -4,6 +4,7 @@ venv
 conector.log
 # Python
 __pycache__/
+Biblioteca
 *.pyc
 *.pyo
 *.pyd

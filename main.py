@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from Fm.file_manager import FManager
 
 import magic
 
@@ -27,7 +28,11 @@ from security.security import get_password_hash, create_access_token
 from dao.conductor_dao import ConductorDao
 from domain.conductor import Conductor
 
+from dao.empleado_dao import EmpleadoDAO
 from domain.empleado import Empleado
+
+from dao.reporte_dao import ReporteDao
+from domain.reporte import Report
 from domain.imagenSiniestro import Imagen
 
 
@@ -204,18 +209,28 @@ async def update_reporte(reporte_id: str, updated_data: dict):
 
 @app.post("/reporte/create", summary="Crear reporte",
           tags=["Reporte"], status_code=status.HTTP_201_CREATED)
-async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: str, desDictamen: str, fechaSiniestro: str, arrayImagenes: list):
+async def register_reporte(new_report: Report):
     dao = ReporteDao()
-    folio = dao.generar_Folio(id_Conductor, aliasVehiculo, fechaSiniestro)
+    idmongo = dao.registrar_reporte(new_report)
     # Procesar imágenes
-    dao.procesarImagenes(folio, arrayImagenes)
-    print(folio)
-    result = 0
-    if result == 0:
-        return {"mensaje": "Reporte registrado exitosamente"}
-    elif result == -2:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
+    # manager = file_manager()
+    # await manager.guardar_imagen(image, idmongo)
+    if idmongo != "":
+        return {"mensaje": f"Reporte registraodo {idmongo}"}
     else:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
+
+@app.post("/reporte/create/imagen", summary="Guardar imagen reporte",
+          tags=["Reporte"], status_code=status.HTTP_201_CREATED)
+async def register_reporte_imagen(image: UploadFile = File(...), idmongo: str = 'default'):
+
+    # Procesar imágenes
+    manager = FManager()
+    if await manager.guardar_imagen(image, idmongo):
+        return {"mensaje": f"Imagen registrado {idmongo}"}
+    else:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
+    
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar reporte")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
     
@@ -316,7 +331,7 @@ async def delete_empleado(empleado_id: str):
         return {"mensaje": "Empleado eliminado exitosamente"}
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
-
+    
 #End-point para obtener a todos los empleados (ID, Nombre, apelldios y Tipo y si esta activo)
 @app.get("/empleados", status_code=status.HTTP_200_OK)
 async def get_all_empleados():
