@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from datetime import datetime
+
+import security.security
 from domain.conductor import Conductor
 from connection.mongo_conector import Conector
 from pymongo.collection import Collection
@@ -26,7 +28,10 @@ class ConductorDao:
     def register_conductor(self, new_conductor: Conductor):
         try:
             data: Collection = self.db.conductores
-            conductor_dict = new_conductor.dict()
+            hashed_password = security.security.get_password_hash(new_conductor.password)
+            new_conductor.password = hashed_password
+            new_conductor.fechaNacimiento = datetime.combine(new_conductor.fechaNacimiento, datetime.min.time())
+            conductor_dict = new_conductor.model_dump()
             data.insert_one(conductor_dict)
             return 0
         except Exception as e:

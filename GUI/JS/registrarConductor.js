@@ -1,4 +1,3 @@
-// Función para enviar la solicitud con Axios
 function submitForm() {
     const url = `${baseURL}/conductor/`;
     var password1 = document.getElementById('password').value;
@@ -16,11 +15,12 @@ function submitForm() {
             numeroTelefono: document.getElementById('numeroDeTelefono').value,
             activo: true,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+            password: document.getElementById('password').value,
+            tokenSesion: 'holuap'
         };
 
         // Realizar la solicitud POST con Axios
-        axios.post('http://localhost:8000/conductor/', formData, {
+        axios.post(url, formData, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -34,7 +34,5 @@ function submitForm() {
                 // Manejar errores de la solicitud aquí
                 console.error('Error al realizar la solicitud:', error);
             });
-    } else {
-        alert('¡Error! Las contraseñas no coinciden.');
     }
 }
