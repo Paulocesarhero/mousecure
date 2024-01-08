@@ -9,7 +9,7 @@ from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
 
 import security
-from dao.empleado_dao import EmpleadoDao
+from dao.empleado_dao import  EmpleadoDAO
 from dao.reporte_dao import ReporteDao
 from domain.reporte import Report
 from domain.token import Token
@@ -200,7 +200,8 @@ async def update_reporte(reporte_id: str, updated_data: dict):
                             detail="Error interno del servidor al actualizar reporte")
 
 
-@app.post("/reporte/create",status_code=status.HTTP_201_CREATED)
+@app.post("/reporte/create", summary="Crear reporte",
+          tags=["Reporte"], status_code=status.HTTP_201_CREATED)
 async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: str, desDictamen: str, fechaSiniestro: str, arrayImagenes: list):
     dao = ReporteDao()
     folio = dao.generar_Folio(id_Conductor, aliasVehiculo, fechaSiniestro)

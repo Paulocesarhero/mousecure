@@ -70,6 +70,8 @@ class UserDao:
         if conductor_result:
             return {"user_type": "conductor", "user_id": str(conductor_result["_id"]), "result": 1}
         elif empleado_result:
+            if empleado_result["rol"] == "ajustador":
+                return {"user_type": "ajustador", "user_id": str(empleado_result["_id"]), "result": 1}
             return {"user_type": "empleado", "user_id": str(empleado_result["_id"]), "result": 1}
         else:
             return {"user_type": None, "user_id": None, "result": 0}

@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+
+import security
 from domain.empleado import Empleado
 from connection.mongo_conector import Conector
 from pymongo.collection import Collection
@@ -31,7 +33,6 @@ class EmpleadoDAO:
         except Exception as e:
             logging.exception(f"Error al registrar Empleado en la base de datos: {e}")
             return -2
-
 
     def update_empleado(self, empleado_id: str, updated_data: dict) -> int:
         try:
