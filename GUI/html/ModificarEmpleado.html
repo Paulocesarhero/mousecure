@@ -6,15 +6,73 @@
     <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
     <link rel="stylesheet" href="../CSS/NavBarStyle.css">
     <link rel="stylesheet" href="../CSS/CuadroDialogo.css">
+    <link rel="stylesheet" href="../CSS/modificarEmpleado.css">
     <link rel="stylesheet" href="../CSS/MainAdminStyle.css">
     <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
     <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
-    <script type="text/javascript" src="../JS/MainAdmin.js"></script>
+    <script type="text/javascript" src="../JS/modificarEmpleado.js"></script>
 
     <title>Mousecure</title>
 <script>
 
 </script>
+
+<style>
+    .form-container {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 500px;
+        margin: auto;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .form-group input[type="date"] {
+        padding: 9px;
+    }
+    .form-group input[type="submit"],
+    .form-group button {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form-group button {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    .form-group button:hover {
+        background-color: #e7e7e7;
+    }
+    .form-group input[type="submit"] {
+        background-color: #5cb85c;
+        color: white;
+        border-color: #4cae4c;
+    }
+    .form-group input[type="submit"]:hover {
+        background-color: #4cae4c;
+    }
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+
+
+
 
 </head>
 <body>
@@ -52,73 +110,41 @@
     </header>
 
     <main>
-        <div id="titulo_Pagina">
-            Administrar Empleados
-        </div>
-        <div class="ordenar-contenido">
-            <div id="estructura_Contenido">
-                <section id="panel_Tabla">
-                    <div id="instrucciones_Tabla">
-                        <h2>Puede buscar a empleados por nombre o nombre de usuario en la barra de búsqueda</h2>
-                    </div>
-                    <div id="funciones_Tabla">
-                        <div class="contenedor-Componentes" id="contenedor_Filtro">
-                            <label for="filtro_Tabla">Filtro de Busqueda</label><br> 
-                            <select id="filtro_Tabla" tabindex="0" value="">
-                                <option value="Ajustador">Ajustador</option>
-                                <option value="Ejecutivo">Ejecutivo de Asistencia</option>
-                                <option value="Admin">Administrador</option>
-    
-                            </select>
-                        </div>
-                        <div class="contenedor-Componentes" id="contenedor_Busqueda">
-                            <label for="busqueda_Tabla">Barra de busqueda</label><br> 
-                            <input type="text" id="busqueda_Tabla" tabindex="0">
-                        </div>
-                        <div class="contenedor-Componentes" id="contenedor_Boton">
-                            <button id="btn_Agregar_Empleado" class="blue" tabindex="0">
-                                <img src="../Resources/Icons/AgregarPersona-LT.png" height="25px" weight="25px"/>
-                                Nuevo Empleado
-                            </button>
-                        </div>
-                    </div>
-                </section>
-                <section id="contenedor_Tabla">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Lista de empelados</th>
-                              </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Repite las filas según sea necesario
-                            <tr>
-                                <td>
-                                  <div id="infoEmpleado">
-                                      <div id="puestoNombre">
-                                          <h5>Ajustador</h5>
-                                          <p>Nombre + ApellidoPaterno + ApellidoMaterno</p>
-                                      </div>
-                                      <div id="Botones">
-                                          <button class="icon-button blue" onclick="verDetalle()" tabindex="0">
-                                              <img src="../Resources/Icons/Ver-NT.png" height="32px" width="32px" alt="Ver" />
-                                            </button>
-                                            <button class="icon-button blue" onclick="editarDetalle()" tabindex="0">
-                                              <img src="../Resources/Icons/Lapiz-NT.png" height="32px" width="32px"  alt="Editar" />
-                                            </button>
-                                            <button class="icon-button red" onclick="eliminarDetalle()" tabindex="0">
-                                              <img src="../Resources/Icons/Eliminar-NT.png" height="32px" width="32px"  alt="Eliminar" />
-                                            </button>
-                                      </div>
-                                  </div>
-                                </td>
-                            </tr>
-                             -->
-                        </tbody>
-                        <!-- Repite las filas según sea necesario -->
-                      </table>
-                </section>
-            </div>
+        <div class="form-container">
+            <form action="/submit" method="post">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoPaterno">Apellido Paterno</label>
+                    <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoMaterno">Apellido Materno</label>
+                    <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="fechaIngreso">Fecha de Ingreso</label>
+                    <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargo">Cargo</label>
+                    <select id="cargo" name="cargo" required>
+                        <option value="Ajustador">Ajustador</option>
+                        <option value="EjecutivoDeAsistencia">Ejecutivo de asistencia</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+                <div class="form-group button-group">
+                    <button type="button" onclick="location.href='your_back_link_here';">Regresar</button>
+                    <input type="submit" value="Guardar">
+                </div>
+            </form>
         </div>
 
             
