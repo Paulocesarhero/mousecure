@@ -44,7 +44,21 @@ class ReporteDao:
             return 0
         except Exception as e:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
-            return -2        
+
+    def registrar_reporte(self, new_report: Report) -> str:
+        try:
+            data: Collection = self.db.reporte
+            report_dict = new_report.model_dump()
+
+            # Insertar el nuevo reporte en la base de datos
+            res = data.insert_one(report_dict)
+
+            # Retornar el _id del nuevo registro creado
+            return str(res.inserted_id) if res.inserted_id else None
+
+        except Exception as e:
+            logging.exception(f"Error al insertar reporte en la base de datos: {e}")
+            return None
         
     def get_all_reportes(self):
         try:

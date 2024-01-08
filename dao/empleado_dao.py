@@ -22,17 +22,16 @@ class EmpleadoDAO:
         except ConnectionError as e:
             logging.exception(f"Error al conectar a la base de datos: {e}")
 
-    def register_empleado(self, new_empleado: Empleado):
+
+
+    def register_empleado(self, new_Empleado: Empleado):
         try:
             data: Collection = self.db.empleados
-            hashed_password = security.security.get_password_hash(new_empleado.password)
-            new_empleado.password = hashed_password
-            empleado_dict = new_empleado.model_dump()
-
+            empleado_dict = new_Empleado.dict(exclude={"id"})
             data.insert_one(empleado_dict)
             return 0
         except Exception as e:
-            logging.exception(f"Error al registrar empleado en la base de datos: {e}")
+            logging.exception(f"Error al registrar Empleado en la base de datos: {e}")
             return -2
 
     def update_empleado(self, empleado_id: str, updated_data: dict) -> int:
