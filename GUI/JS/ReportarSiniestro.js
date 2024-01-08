@@ -79,9 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     Mostrar Dialgo -> Usuario presiona aceptar Operacion -> Se muestra el dialogo de repesua en especifico*/
     document.getElementById('btn_Aceptar').addEventListener('click', async function() {
         const resultadoDialogo = await dispararEventoAbrirDialogoOperacion("enviar_Reporte");
-        console.log("|5| Escucho evento desde reporteSiniestro.js");
         if (resultadoDialogo) {
-            console.log("|6| Escucho evento desde reporteSiniestro.js");
             var respuestaEjemplo = ejecutarUnallamadaEnespeficicoAlApi();
             console.log(respuestaEjemplo) ;
             /*Si no quieres que se devuelva un cuadro de confirmacion, como el logout no agregues uses el metodo de dispararDialogoResultado*/
