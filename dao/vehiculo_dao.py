@@ -25,12 +25,11 @@ class VehiculoDao:
      try:
         data: Collection = self.db.vehiculos
         vehiculo_dict = new_vehiculo.dict()
-        result = data.insert_one(vehiculo_dict)
-        vehiculo_dict['_id'] = result.inserted_id
-        return vehiculo_dict
+        data.insert_one(vehiculo_dict)
+        return 0
      except Exception as e:
         logging.exception(f"Error al registrar vehiculo en la base de datos: {e}")
-        return None
+        return -2
     
     def get_vehiculos_by_conductor(self, idConductor: str):
      try:

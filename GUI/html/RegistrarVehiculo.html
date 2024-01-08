@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/NavBarStyle.css">
 
-   <style>
+    <style>
         /* Estilo para el botón deshabilitado */
         .btn-disabled {
             background-color: #cccccc;
@@ -179,17 +179,17 @@
                     <label for="vehicle-select">Seleccione un tipo de poliza:</label>
                     <select id="vehicle-select" class="form-control" required>
                         <option value="">Seleccione una opción</option>
-                        <option value="vehiculo1">Bronce</option>
-                        <option value="vehiculo2">Plata</option>
-                        <option value="vehiculo3">Oro</option>
+                        <option value="1">Bronce</option>
+                        <option value="2">Plata</option>
+                        <option value="3">Oro</option>
                     </select>
                 </div>
 
                 <!-- Cuadro de texto para número de serie -->
                 <div class="form-group">
                     <label for="serial-number">Número de serie:</label>
-                    <input type="text" class="form-control" id="serial-number" placeholder="Ejemplo: 82633A123456"
-                        required pattern="[0-9]{9}" maxlength="9">
+                    <input type="text" class="form-control" id="serial-number" name="id"
+                        placeholder="Ejemplo: 82633A123456" required pattern="[0-9]{9}" maxlength="9">
                     <div id="serial-number-error" style="color: red; display: none;">Por favor, introduzca un número de
                         serie válido.</div>
                 </div>
@@ -197,8 +197,8 @@
                 <!-- Cuadro de texto para placa -->
                 <div class="form-group">
                     <label for="license-plate">Placa:</label>
-                    <input type="text" class="form-control" id="license-plate" placeholder="Ejemplo: ABC1234" required
-                        pattern="[A-Z0-9]{6,8}" maxlength="8">
+                    <input type="text" class="form-control" id="license-plate" name="placas"
+                        placeholder="Ejemplo: ABC1234" required pattern="[A-Z0-9]{6,8}" maxlength="8">
                     <div id="license-plate-error" style="color: red; display: none;">Por favor, introduzca una placa
                         válida.
                         Ejemplo: ABC1234</div>
@@ -208,7 +208,7 @@
                 <!-- Combo box para marca del vehículo -->
                 <div class="form-group">
                     <label for="brand-select">Seleccione la marca del vehículo:</label>
-                    <select id="brand-select" class="form-control" required>
+                    <select id="brand-select" class="form-control" name="marca" required>
                         <option value="">Seleccione una marca</option>
                         <option value="marca1">Nissan</option>
                         <option value="marca2">Mazda</option>
@@ -220,7 +220,7 @@
                 <!-- Combo box para el año del vehículo -->
                 <div class="form-group">
                     <label for="year-select">Seleccione el año del vehículo:</label>
-                    <select id="year-select" class="form-control" required>
+                    <select id="year-select" class="form-control" name="anio" required>
                         <option value="">Seleccione un año</option>
                         <option value="2010">2010</option>
                         <option value="2011">2011</option>
@@ -242,8 +242,8 @@
                 <!-- Cuadro de texto para modelo del vehículo -->
                 <div class="form-group">
                     <label for="color-select">Seleccione el modelo del vehículo:</label>
-                    <input type="text" class="form-control" id="model-input" placeholder="Ejemplo: Tsuru" required
-                        pattern="[A-Za-z0-9 ]+" maxlength="40">
+                    <input type="text" class="form-control" id="model-input" name="modelo" placeholder="Ejemplo: Tsuru"
+                        required pattern="[A-Za-z0-9 ]+" maxlength="40">
                     <div id="model-input-error" style="color: red; display: none;">Por favor, introduzca un modelo
                         válido.
                     </div>
@@ -253,7 +253,7 @@
                 <!-- Combo box para color del vehículo -->
                 <div class="form-group">
                     <label for="color-select">Seleccione el color del vehículo:</label>
-                    <select id="color-select" class="form-control" required>
+                    <select id="color-select" class="form-control" name="color" required>
                         <option value="">Seleccione un color</option>
                         <option value="color1">Rojo</option>
                         <option value="color2">Negro</option>
@@ -331,8 +331,84 @@
     // Evento que maneja el envío del formulario
     form.addEventListener('submit', function (event) {
         event.preventDefault();
-        // Aquí se colocaría la lógica para llamar a la API
-        console.log('Formulario enviado');
+
+        // Recoger los datos del formulario
+        var formData = new FormData(form);
+        let poliza = Number(formData.get('vehicle-select'));
+        // Crear un objeto para enviar a la API
+        var vehiculo = {
+            id: formData.get('id').toString(),
+            alias: '',
+            modelo: formData.get('modelo').toString(),
+            marca: formData.get('marca').toString(),
+            anio: parseInt(formData.get('anio')),
+            color: formData.get('color').toString(),
+            placas: formData.get('placas').toString(),
+            idConductor: '1'
+        };
+
+        // Llamar a la API
+        fetch('http://localhost:8000/vehiculo/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(vehiculo),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Obtener la fecha actual
+                let fechaInicio = new Date();
+
+                // Formatear la fecha al formato YYYY-MM-DD
+                let fechaInicioStr = fechaInicio.toISOString().split('T')[0];
+
+                // Obtener la fecha tres días después
+                let fechaFin = new Date();
+                fechaFin.setDate(fechaFin.getDate() + 3);
+
+                // Formatear la fecha al formato YYYY-MM-DD
+                let fechaFinStr = fechaFin.toISOString().split('T')[0];
+
+                var polizaData = {
+                    id: 'someId', // reemplaza esto con el id correcto
+                    fehcaInicio: fechaInicioStr,
+                    fechaFin: fechaFinStr,
+                    idPlan: poliza.toString(),
+                    idVehiculo: vehiculo.id
+                };
+
+                // Llamar a la API
+                return fetch('http://localhost:8000/poliza/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(polizaData),
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert('Vehículo y póliza agregados exitosamente!');
+                form.reset();
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert(`Hubo un error al agregar el vehículo o la póliza: ${error.message}`);
+            });
     });
     // checkFormValidity();
 

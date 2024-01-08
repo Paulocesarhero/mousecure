@@ -35,3 +35,12 @@ class EmpleadoDao:
         except Exception as e:
             logging.exception(f"Error al registrar empleado en la base de datos: {e}")
             return -2
+    
+    def get_all_empleados(self):
+        try:
+            data: Collection = self.db.empleados
+            empleados = list(data.find())
+            return [Empleado(**empleado) for empleado in empleados]
+        except Exception as e:
+            self.logger.exception(f"Error al obtener todos los empleados     de la base de datos: {e}")
+            return None    

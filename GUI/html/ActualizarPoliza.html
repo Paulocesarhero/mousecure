@@ -8,48 +8,73 @@
 
     <title>Polizas</title>
     <style>
-        body,
-        
-
-        .button-container {
-            text-align: center;
-        }
-
-        .custom-button {
-            padding: 20px 40px;
-            margin: 10px;
-            font-size: 1.5rem;
-            /* Texto más grande */
-            background-color: #ddd;
-            /* Color neutro */
-            border: 2px solid transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            outline: none;
-        }
-
-        .custom-button:hover {
-            transform: scale(1.1);
-            /* Aumenta el tamaño al pasar el mouse */
-            background-color: #ccc;
-            /* Color al pasar el mouse */
-        }
-
-        /* Asegúrate de que los botones no se salgan de la pantalla en dispositivos móviles */
-        @media (max-width: 768px) {
-            .custom-button {
-                padding: 15px 30px;
-                font-size: 1.2rem;
-            }
-        }
-
         main {
             margin-top: 60px;
             /* Ajusta este valor según la altura de tu navbar */
         }
 
-     
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .box {
+            flex: 0 1 auto;
+            min-width: 300px;
+            /* Esto hará que los select tengan al menos 300px de ancho */
+            height: 40px;
+            /* Puedes ajustar esto a lo que necesites */
+            padding: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            /* Ajusta esto a lo que necesites */
+        }
+
+        .btn {
+            background-color: #007BFF;
+            /* Color de fondo azul */
+            color: white;
+            /* Color de texto blanco */
+            border: none;
+            /* Sin borde */
+            padding: 15px 32px;
+            /* Espaciado interno */
+            text-align: center;
+            /* Alineación del texto */
+            text-decoration: none;
+            /* Sin decoración de texto */
+            display: inline-block;
+            /* Display inline-block */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            margin: 4px 2px;
+            /* Margen */
+            cursor: pointer;
+            /* Cursor de mano */
+            transition: transform 0.3s;
+            /* Transición suave al mover */
+        }
+
+        /* Estilo del botón al pasar el mouse */
+        .btn:hover {
+            background-color: #0056b3;
+            /* Color de fondo azul oscuro */
+            transform: scale(1.1);
+            /* Aumenta el tamaño del botón */
+        }
     </style>
 </head>
 
@@ -173,28 +198,112 @@
         </nav>
     </header>
     <main>
-        <div class="button-container">
-            <button id="update-policy" class="custom-button">Actualizar póliza de vehículo</button>
-            <button id="new-policy" class="custom-button">Nueva póliza</button>
-        </div>
+        <form>
+            <div class="container">
+                <div class="box-container">
+                    <p>Seleccione su Vehículo</p>
+                    <select class="box" required>
+                        <option value="">Selecciona una opción</option>
+                        <!-- Agrega más opciones aquí -->
+                    </select>
+                </div>
+                <div class="box-container">
+                    <p>Escoga su póliza</p>
+                    <select id="vehicle-select" class="box" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="1">Bronce</option>
+                        <option value="2">Plata</option>
+                        <option value="3">Oro</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="btn" type="submit">Actualizar</button>
+            </div>
+        </form>
     </main>
 
-    <script>
 
-        document.getElementById('new-policy').addEventListener('click', function () {
-            window.location.href = "RegistrarVehiculo.html";
-        });
-        // JavaScript para manejar los clics en los botones
-        document.getElementById('update-policy').addEventListener('click', function () {
-            // Aquí debes reemplazar '#' con la URL de la página para actualizar pólizas
-            window.location.href = 'ActualizarPoliza.html';
-        });
-
-        document.getElementById('new-policy').addEventListener('click', function () {
-            // Aquí debes reemplazar '#' con la URL de la página para nuevas pólizas
-            window.location.href = '#';
-        });
-    </script> 
 </body>
+
+<script>
+    var vehiculos = []; // Esta variable almacenará todos los vehículos
+    var vehiculoIdSeleccionado = null; // Esta variable almacenará el id del vehículo seleccionado
+
+    window.onload = function () {
+        var idConductor = '1'; // Reemplaza esto con el ID del conductor real
+        fetch(`http://localhost:8000/vehiculos/${idConductor}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Aquí puedes manejar los vehículos que recibiste de la API
+                if (data.length === 0) {
+                    alert('No se han encontrado vehículos');
+                } else {
+                    vehiculos = data;
+                    var select = document.querySelector('.box');
+                    vehiculos.forEach((vehiculo, index) => {
+                        var option = document.createElement('option');
+                        option.text = vehiculo.modelo;
+                        option.value = vehiculo.id; // Guardamos el idVehiculo en el valor de la opción
+                        select.add(option);
+                    });
+                }
+            })
+            .catch(error => {
+                console.log('Hubo un problema con la petición Fetch: ' + error.message);
+            });
+
+        // Agregamos un evento 'change' al combo box para actualizar el vehículo seleccionado
+        document.querySelector('.box').addEventListener('change', function () {
+            vehiculoIdSeleccionado = this.value;
+            alert('El ID del vehículo seleccionado es: ' + vehiculoIdSeleccionado);
+
+        });
+    }
+
+    document.querySelector('.btn').addEventListener('click', function (event) {
+        var form = document.querySelector('form');
+        if (!form.checkValidity()) {
+            // Si el formulario no es válido, se mostrarán los mensajes de validación predeterminados
+            return;
+        }
+        event.preventDefault();
+        
+        var selectedValue = document.querySelector('#vehicle-select').value;        
+        //alert(selectedValue); // Alerta de error 
+    
+        var updatedData = {
+            idPlan: selectedValue,
+            idVehiculo: vehiculoIdSeleccionado.toString()
+        };
+        
+
+
+        fetch(`http://localhost:8000/poliza/update${vehiculoIdSeleccionado}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Exito al actualizar la poliza'); // Alerta de error
+                form.reset();
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error al actualizar la poliza'); // Alerta de error
+
+            });
+    });
+</script>
 
 </html>
