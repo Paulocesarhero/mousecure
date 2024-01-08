@@ -43,7 +43,8 @@ function submitForm() {
                         // Verificar y almacenar el tipo de usuario en la GUI
                         if (protectedResponse.data.current_user && protectedResponse.data.current_user.tipo) {
                             const userType = protectedResponse.data.current_user.tipo;
-                            localStorage.setItem('userType', userType);
+                            const idMongo = protectedResponse.data.current_user.id;
+                            localStorage.setItem('idMongo', idMongo);
                             if (userType == 'conductor'){
                                 window.location.href = 'html/MainUser.html';
                             }if (userType == 'empleado'){
