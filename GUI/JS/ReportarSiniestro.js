@@ -276,68 +276,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Procesar la respuesta de la imagen
+                    dispararDialogoResultado(
+                        imagenesDialogoRespuesta[0],
+                        "EXITO!: ",
+                        "Se creo el reporte",
+                        "Aceptar",
+                        false);
                 })
-                .catch(error => console.error('Error al registrar imagen:', error));
+                .catch(error => {
+                    dispararDialogoResultado(
+                        imagenesDialogoRespuesta[1],
+                        "Error!: ",
+                        error,
+                        "Aceptar",
+                        false);
+                });
+
+
+            }else if(idmongo){
+                dispararDialogoResultado(
+                    imagenesDialogoRespuesta[0],
+                    "EXITO!: ",
+                    "Se creo el reporte",
+                    "Aceptar",
+                    false);
             }
+
+
+
         })
         .catch(error => {
-            console.error('Error al registrar reporte:', error);
+            dispararDialogoResultado(
+                imagenesDialogoRespuesta[1],
+                "Error!: ",
+                respuestaEjemplo,
+                "Aceptar",
+                false);
         });
     }
-
-
-
-    var form = document.getElementById('formulario_Siniestro');
-
-    form.onsubmit = function(event) {
-        event.preventDefault();
-
-        var reportData = {
-            fechaDelSiniestro: (fechaActual.getDate() < 10 ? '0' : '') + fechaActual.getDate() + '/' + ((fechaActual.getMonth() + 1) < 10 ? '0' : '') + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear(),
-            descripcionDelSiniestro: document.getElementById('declaracion_Textarea').value,
-            tipo: document.getElementById('tipo_Siniestro_Combobox').value,
-            vehiculo: document.getElementById('vehiculo_Comboxbox').value,
-            ubicacion: geoFindMe(),
-            empleadoAsignado: obtenerCorreoAleatorio()
-        };
-
-        // Envía los datos a la API para crear el reporte
-        fetch('http://localhost:8000/reporte/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reportData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Procesar la respuesta
-            var idmongo = data.mensaje.split(" ")[2]; // Asumiendo que el mensaje es "Reporte registrado {idmongo}"
-            
-            // Si se seleccionó el checkbox y se obtuvo el idmongo, enviar otra solicitud POST
-            if (activarCarruselCheckbox.checked && idmongo) {
-                var image = document.getElementById('subir_Foto').files[0];
-                var formData = new FormData();
-                formData.append('image', image);
-                formData.append('idmongo', idmongo);
-
-                fetch('/reporte/create/imagen', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // Procesar la respuesta de la imagen
-                })
-                .catch(error => console.error('Error al registrar imagen:', error));
-            }
-        })
-        .catch(error => {
-            console.error('Error al registrar reporte:', error);
-        });
-    };
-
 
 
 

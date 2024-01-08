@@ -167,19 +167,25 @@ async def get_conductor_by_id(conductor_id: str):
 
 
 # Endpoint para obtener todos los reportes
-@app.get("/reportes", summary="Obtener reporte",
+@app.get("/reportes/", summary="Obtener reporte",
          tags=["Reporte"], response_model=list[Report])
 async def get_all_reportes():
+    print("get_all_reportes 1")
     dao = ReporteDao()
+    print("get_all_reportes 2")
     try:
+        print("get_all_reportes 3")
         reportes = dao.get_all_reportes()
+        print("get_all_reportes 6")
         if reportes is None:
             raise HTTPException(status_code=404, detail="No se encontraron reportes")
         return reportes
     except HTTPException as exceptionHTTP:
         raise exceptionHTTP
     except Exception as exceptionHTTP:
+        print("get_all_reportes 7")
         logging.exception(f"Error en la obtención de todos los reportes: {exceptionHTTP}")
+        print(exceptionHTTP)
         raise HTTPException(status_code=500, detail="Error del servidor al recuperar los reportes")
 
 

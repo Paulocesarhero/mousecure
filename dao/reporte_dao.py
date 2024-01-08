@@ -62,10 +62,15 @@ class ReporteDao:
         
     def get_all_reportes(self):
         try:
+            print("get_all_reportes 4")
             data: Collection = self.db.reporte
+            print("get_all_reportes 5")
             reportes = list(data.find())
+            print("get_all_reportes 6")
             return [Report(**reporte) for reporte in reportes]
         except Exception as e:
+            print("get_all_reportes 8")
+            print(e)        
             self.logger.exception(f"Error al obtener todos los reportes de la base de datos: {e}")
             return None    
 
