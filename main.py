@@ -352,3 +352,80 @@ async def update_reporte_by_folio(folio: str, updated_data: dict, dao: ReporteDa
     except Exception as e:
         logging.exception(f"Error en el endpoint de actualización de reporte por folio: {e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar reporte por folio")
+    
+        
+# Endpoint-Vehiculo para registrar un nuevo vehiculo 
+@app.post("/vehiculo/", status_code=status.HTTP_201_CREATED)
+async def register_vehiculo(new_vehiculo: Vehiculo):
+    dao = VehiculoDao()
+    result = dao.register_vehiculo(new_vehiculo)
+    if result != None:
+        return result
+    elif result == None:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar el vehiculo")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar el vehiculo")
+    
+# Endpoint para obtener todos los vehiculos de un conductor
+@app.get("/vehiculos/{idConductor}", response_model=list[Vehiculo])
+async def get_all_vehiculos_by_idConductor(idConductor: str):
+    dao = VehiculoDao()
+    try:
+        vehiculos = dao.get_vehiculos_by_conductor(idConductor)
+        if vehiculos is None:
+            raise HTTPException(status_code=404, detail="No se encontraron vehiculos")
+        return vehiculos
+    except HTTPException as exceptionHTTP:
+        raise exceptionHTTP
+    except Exception as exceptionHTTP:
+        logging.exception(f"Error en la obtención de todos los vehiulos: {exceptionHTTP}")
+        raise HTTPException(status_code=500, detail="Error del servidor al recuperar los vehiculos")
+    
+# Endpoint-Poliza para registrar un nueva poliza 
+@app.post("/poliza/", status_code=status.HTTP_201_CREATED)
+async def register_poliza(new_poliza: Poliza):
+    dao = PolizaDao()
+    result = dao.register_poliza(new_poliza)
+    if result == 0:
+     return {"mensaje": "Poliza registrado exitosamente"}
+    elif result == -2:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar una Poliza")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar una Poliza")
+
+# Endpoint-Poliza para actualizar un nueva poliza 
+@app.put("/poliza/{vehiculo_id}", status_code=status.HTTP_200_OK)
+async def update_poliza(vehiculo_id: str, updated_data: dict):
+    dao = PolizaDao()
+    try:
+        result = dao.update_poliza(vehiculo_id, updated_data)        
+        if result == 0:
+            return {"mensaje": "Poliza actualizado exitosamente"}
+        elif result == 1:
+            return {"mensaje": "La Poliza ya tiene los datos proporcionados, no se realizó ninguna actualización"}
+        elif result == -1:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Poliza no encontrado")
+        elif result == -2:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al actualizar la Poliza")
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al actualizar la Poliza")
+    except Exception as e:
+        logging.exception(f"Error en el endpoint de actualización de la Poliza: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al actualizar la Poliza") 
+    
+# Endpoint para obtener una poliza por ID de vehiculo
+@app.get("/poliza/{vehiculo_id}", response_model=Poliza)
+async def get_poliza_by_idVehiculo(vehiculo_id: str):
+    dao = PolizaDao()
+    try:
+        poliza = dao.get_poliza_by_idVehiculo(vehiculo_id)
+        if poliza is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se ha encontrado")                    
+        else:
+            return poliza
+    except HTTPException as exceptionHTTP:
+        raise exceptionHTTP
+    except Exception as exceptionHTTP:
+        logging.exception(f"Error en el endpoint de obtención de la poliza por ID: {exceptionHTTP}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor al obtener poliza por ID")
+       
