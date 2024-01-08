@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+
+    <title>Polizas</title>
+    <style>
+        body,
+        
+
+        .button-container {
+            text-align: center;
+        }
+
+        .custom-button {
+            padding: 20px 40px;
+            margin: 10px;
+            font-size: 1.5rem;
+            /* Texto más grande */
+            background-color: #ddd;
+            /* Color neutro */
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            outline: none;
+        }
+
+        .custom-button:hover {
+            transform: scale(1.1);
+            /* Aumenta el tamaño al pasar el mouse */
+            background-color: #ccc;
+            /* Color al pasar el mouse */
+        }
+
+        /* Asegúrate de que los botones no se salgan de la pantalla en dispositivos móviles */
+        @media (max-width: 768px) {
+            .custom-button {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+
+        main {
+            margin-top: 60px;
+            /* Ajusta este valor según la altura de tu navbar */
+        }
+
+     
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px" />MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Reportes
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis reportes</a></li>
+                        <li><a href="../html/ReportarSiniestro.html"><img
+                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                    weight="32px" />Reportar Siniestros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Pólizas
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis Pólizas</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
+                                    weight="32px" />Comprar Pólizas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Contactos
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
+                                    weight="32px" />Correo Electrónico</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
+                                    weight="32px" />Número de celular</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
+                                    weight="32px" />Ajustes</a></li>
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
+                                    height="32px" weight="32px" />Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px" />
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"
+                                src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />[Nombre de
+                            Usuario]</a></li>
+                    &nbsp;
+                    <li class="sidebar-header">Reportes</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Mis
+                            reportes</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                weight="32px" />Reportar Siniestros</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Polizas</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px" />Mis
+                            Pólizas</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px" />Comprar
+                            Pólizas</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Contactos</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px" />Correo
+                            Electrónico</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px" />Número
+                            de celular</a></li>
+                    <hr>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img
+                                src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px" />Cerrar Sesión</a>
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="button-container">
+            <button id="update-policy" class="custom-button">Actualizar póliza de vehículo</button>
+            <button id="new-policy" class="custom-button">Nueva póliza</button>
+        </div>
+    </main>
+
+    <script>
+
+        document.getElementById('new-policy').addEventListener('click', function () {
+            window.location.href = "RegistrarVehiculo.html";
+        });
+        // JavaScript para manejar los clics en los botones
+        document.getElementById('update-policy').addEventListener('click', function () {
+            // Aquí debes reemplazar '#' con la URL de la página para actualizar pólizas
+            window.location.href = '#';
+        });
+
+        document.getElementById('new-policy').addEventListener('click', function () {
+            // Aquí debes reemplazar '#' con la URL de la página para nuevas pólizas
+            window.location.href = '#';
+        });
+    </script> 
+</body>
+
+</html>

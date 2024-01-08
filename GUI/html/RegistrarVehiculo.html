@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vehículo</title>
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+
+   <style>
+        /* Estilo para el botón deshabilitado */
+        .btn-disabled {
+            background-color: #cccccc;
+            border-color: #cccccc;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            /* Color de fondo azul */
+            color: white;
+            /* Color de texto blanco */
+            border: none;
+            /* Sin borde */
+            padding: 15px 32px;
+            /* Espaciado interno */
+            text-align: center;
+            /* Alineación del texto */
+            text-decoration: none;
+            /* Sin decoración de texto */
+            display: inline-block;
+            /* Display inline-block */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            margin: 4px 2px;
+            /* Margen */
+            cursor: pointer;
+            /* Cursor de mano */
+            transition: transform 0.3s;
+            /* Transición suave al mover */
+        }
+
+        /* Estilo del botón al pasar el mouse */
+        .btn:hover {
+            background-color: #0056b3;
+            /* Color de fondo azul oscuro */
+            transform: scale(1.1);
+            /* Aumenta el tamaño del botón */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px" />MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Reportes
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis reportes</a></li>
+                        <li><a href="../html/ReportarSiniestro.html"><img
+                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                    weight="32px" />Reportar Siniestros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Pólizas
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis Pólizas</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
+                                    weight="32px" />Comprar Pólizas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Contactos
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
+                                    weight="32px" />Correo Electrónico</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
+                                    weight="32px" />Número de celular</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
+                                    weight="32px" />Ajustes</a></li>
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
+                                    height="32px" weight="32px" />Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px" />
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"
+                                src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />[Nombre de
+                            Usuario]</a></li>
+                    &nbsp;
+                    <li class="sidebar-header">Reportes</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Mis
+                            reportes</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                weight="32px" />Reportar Siniestros</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Polizas</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px" />Mis
+                            Pólizas</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px" />Comprar
+                            Pólizas</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Contactos</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px" />Correo
+                            Electrónico</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px" />Número
+                            de celular</a></li>
+                    <hr>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img
+                                src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px" />Cerrar Sesión</a>
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container mt-5">
+            <h2 class="mb-4">Registre su vehículo</h2>
+            <form id="vehicle-form">
+                <!-- Combo box para seleccionar vehículo existente -->
+                <div class="form-group">
+                    <label for="vehicle-select">Seleccione un tipo de poliza:</label>
+                    <select id="vehicle-select" class="form-control" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="vehiculo1">Bronce</option>
+                        <option value="vehiculo2">Plata</option>
+                        <option value="vehiculo3">Oro</option>
+                    </select>
+                </div>
+
+                <!-- Cuadro de texto para número de serie -->
+                <div class="form-group">
+                    <label for="serial-number">Número de serie:</label>
+                    <input type="text" class="form-control" id="serial-number" placeholder="Ejemplo: 82633A123456"
+                        required pattern="[0-9]{9}" maxlength="9">
+                    <div id="serial-number-error" style="color: red; display: none;">Por favor, introduzca un número de
+                        serie válido.</div>
+                </div>
+
+                <!-- Cuadro de texto para placa -->
+                <div class="form-group">
+                    <label for="license-plate">Placa:</label>
+                    <input type="text" class="form-control" id="license-plate" placeholder="Ejemplo: ABC1234" required
+                        pattern="[A-Z0-9]{6,8}" maxlength="8">
+                    <div id="license-plate-error" style="color: red; display: none;">Por favor, introduzca una placa
+                        válida.
+                        Ejemplo: ABC1234</div>
+
+                </div>
+
+                <!-- Combo box para marca del vehículo -->
+                <div class="form-group">
+                    <label for="brand-select">Seleccione la marca del vehículo:</label>
+                    <select id="brand-select" class="form-control" required>
+                        <option value="">Seleccione una marca</option>
+                        <option value="marca1">Nissan</option>
+                        <option value="marca2">Mazda</option>
+                        <option value="marca3">Audi</option>
+                        <option value="marca4">Chevrolet</option>
+                    </select>
+                </div>
+
+                <!-- Combo box para el año del vehículo -->
+                <div class="form-group">
+                    <label for="year-select">Seleccione el año del vehículo:</label>
+                    <select id="year-select" class="form-control" required>
+                        <option value="">Seleccione un año</option>
+                        <option value="2010">2010</option>
+                        <option value="2011">2011</option>
+                        <option value="2012">2012</option>
+                        <option value="2013">2013</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <!-- Cuadro de texto para modelo del vehículo -->
+                <div class="form-group">
+                    <label for="color-select">Seleccione el modelo del vehículo:</label>
+                    <input type="text" class="form-control" id="model-input" placeholder="Ejemplo: Tsuru" required
+                        pattern="[A-Za-z0-9 ]+" maxlength="40">
+                    <div id="model-input-error" style="color: red; display: none;">Por favor, introduzca un modelo
+                        válido.
+                    </div>
+
+                </div>
+
+                <!-- Combo box para color del vehículo -->
+                <div class="form-group">
+                    <label for="color-select">Seleccione el color del vehículo:</label>
+                    <select id="color-select" class="form-control" required>
+                        <option value="">Seleccione un color</option>
+                        <option value="color1">Rojo</option>
+                        <option value="color2">Negro</option>
+                        <option value="color3">Blanco</option>
+                        <option value="color4">Azul</option>
+                    </select>
+                </div>
+
+                <!-- Botón para adquirir -->
+                <button type="submit" id="acquire-button" class="btn">Adquirir</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+<!-- Incluir Bootstrap JS, Popper.js y jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const form = document.getElementById('vehicle-form');
+    const acquireButton = document.getElementById('acquire-button');
+
+    const licensePlateInput = document.getElementById('license-plate');
+    const licensePlateError = document.getElementById('license-plate-error');
+
+    licensePlateInput.addEventListener('input', () => {
+        const pattern = new RegExp(licensePlateInput.pattern);
+        if (!pattern.test(licensePlateInput.value)) {
+            licensePlateError.style.display = 'block';
+        } else {
+            licensePlateError.style.display = 'none';
+        }
+    });
+
+
+    const modelInput = document.getElementById('model-input');
+    const modelInputError = document.getElementById('model-input-error');
+
+    modelInput.addEventListener('input', () => {
+        const pattern = new RegExp(modelInput.pattern);
+        if (!pattern.test(modelInput.value)) {
+            modelInputError.style.display = 'block';
+        } else {
+            modelInputError.style.display = 'none';
+        }
+    });
+
+    const serialNumberInput = document.getElementById('serial-number');
+    const serialNumberError = document.getElementById('serial-number-error');
+
+    serialNumberInput.addEventListener('input', () => {
+        const pattern = new RegExp(serialNumberInput.pattern);
+        if (!pattern.test(serialNumberInput.value)) {
+            serialNumberError.style.display = 'block';
+        } else {
+            serialNumberError.style.display = 'none';
+        }
+    });
+
+    // Función para comprobar si todos los campos son válidos
+    /*   function checkFormValidity() {
+           acquireButton.disabled = !form.checkValidity();
+           if (form.checkValidity()) {
+               acquireButton.classList.remove('btn-disabled');
+           } else {
+               acquireButton.classList.add('btn-disabled');
+           }
+       } */
+
+    // Evento que verifica la validez del formulario cada vez que se cambia un campo
+    //  form.addEventListener('input', checkFormValidity);
+
+    // Evento que maneja el envío del formulario
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Aquí se colocaría la lógica para llamar a la API
+        console.log('Formulario enviado');
+    });
+    // checkFormValidity();
+
+</script>
+</body>
+
+</html>
