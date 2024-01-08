@@ -8,41 +8,42 @@
 
     <title>Polizas</title>
     <style>
-        body,
+        table {
+            margin: 0 auto;
+            /* Centra la tabla horizontalmente */
+            width: 80%;
+            /* Ancho de la tabla */
+            border-collapse: collapse;
+            /* Combina las fronteras */
+        }
 
-
-        .button-container {
+        /* Estilos para las celdas de la tabla */
+        th,
+        td {
+            border: 1px solid #ddd;
+            /* Frontera alrededor de las celdas */
+            padding: 8px;
+            /* Espacio alrededor del texto en las celdas */
             text-align: center;
+            /* Centra el texto horizontalmente */
         }
 
-        .custom-button {
-            padding: 20px 40px;
-            margin: 10px;
-            font-size: 1.5rem;
-            /* Texto más grande */
-            background-color: #ddd;
-            /* Color neutro */
-            border: 2px solid transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            outline: none;
+        /* Estilos para las celdas de encabezado */
+        th {
+            background-color: #4CAF50;
+            /* Fondo verde */
+            color: white;
+            /* Texto blanco */
         }
 
-        .custom-button:hover {
-            transform: scale(1.1);
-            /* Aumenta el tamaño al pasar el mouse */
-            background-color: #ccc;
-            /* Color al pasar el mouse */
+        /* Estilos para las filas al pasar el mouse */
+        tr:hover {
+            background-color: #f5f5f5;
         }
 
-        /* Asegúrate de que los botones no se salgan de la pantalla en dispositivos móviles */
-        @media (max-width: 768px) {
-            .custom-button {
-                padding: 15px 30px;
-                font-size: 1.2rem;
-            }
-        }
+
+
+
 
         main {
             margin-top: 60px;
@@ -179,7 +180,9 @@
                     <th>Marca</th>
                     <th>Color</th>
                     <th>Placas</th>
-                    <th>ID Conductor</th>
+                    <th>Tipo de Póliza</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
                 </tr>
             </thead>
             <tbody>
@@ -189,7 +192,6 @@
     </main>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             var idConductor = '1'; // Reemplaza esto con el ID del conductor
 
@@ -197,22 +199,63 @@
                 .then(response => response.json())
                 .then(vehiculos => {
                     var tableBody = document.querySelector('#vehicles-table tbody');
+                    var vehicleIds = [];
 
                     vehiculos.forEach(vehiculo => {
                         var row = document.createElement('tr');
 
-                        ['id', 'modelo', 'marca', 'color', 'placas', 'idConductor'].forEach(key => {
+                        ['id', 'modelo', 'marca', 'color', 'placas'].forEach(key => {
                             var cell = document.createElement('td');
                             cell.textContent = vehiculo[key] || '';
                             row.appendChild(cell);
                         });
 
+                        // Agrega celdas vacías para tipoPoliza, fechaInicio y fechaFin
+                        ['tipoPoliza', 'fechaInicio', 'fechaFin'].forEach(() => {
+                            var cell = document.createElement('td');
+                            row.appendChild(cell);
+                        });
+
                         tableBody.appendChild(row);
+
+                        // Guarda el ID del vehículo para usarlo más tarde
+                        vehicleIds.push(vehiculo.id);
+                    });
+
+                    // Llama al API para cada ID de vehículo
+                    vehicleIds.forEach((id, index) => {
+                        fetch(`http://localhost:8000/poliza/${id}`)
+                            .then(response => response.json())
+                            .then(poliza => {
+                                var row = tableBody.children[index];
+
+                                // Mapea el idPlan a un tipo de póliza
+                                var tipoPoliza = '';
+                                switch (poliza.idPlan) {
+                                    case '1':
+                                        tipoPoliza = 'Bronce';
+                                        break;
+                                    case '2':
+                                        tipoPoliza = 'Plata';
+                                        break;
+                                    case '3':
+                                        tipoPoliza = 'Oro';
+                                        break;
+                                }
+
+                                // Llena las celdas vacías con los datos de la póliza
+                                ['fehcaInicio', 'fechaFin'].forEach((key, i) => {
+                                    row.children[5 + i].textContent = poliza[key] || '';
+                                });
+
+                                // Llena la celda de tipoPoliza con el tipo de póliza mapeado
+                                row.children[5].textContent = tipoPoliza;
+                            })
+                            .catch(error => console.error('Error:', error));
                     });
                 })
                 .catch(error => console.error('Error:', error));
         });
-
     </script>
 </body>
 

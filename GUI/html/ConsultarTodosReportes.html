@@ -150,14 +150,11 @@
                         <th>Folio</th>
                         <th>Fecha del Siniestro</th>
                         <th>Descripción del Siniestro</th>
-                        <th>Tipo</th>
-                        <th>Fecha de Dictaminación</th>
-                        <th>Descripción Dictamen</th>
-                        <th>Dictamen</th>
-                        <th>Ubicación</th>
-                        <th>Empleado Asignado</th>
                     </tr>
                 </thead>
+                <tbody>
+                    <!-- Las filas de la tabla se agregarán aquí -->
+                </tbody>
                 <tbody>
                     <!-- Las filas de la tabla se agregarán aquí -->
                 </tbody>
@@ -183,16 +180,13 @@
                 .then(reportes => {
                     var tableBody = document.querySelector('#reports-table tbody');
 
-                    // Limpia la tabla antes de agregar los nuevos datos
+                    // Limpia la tabla antes de agregar nuevos datos
                     tableBody.innerHTML = '';
 
-                    // Filtra los reportes para obtener solo los que tienen empleadoAsignado nulo
-                    var filteredReportes = reportes.filter(reporte => reporte.empleadoAsignado === null);
-
-                    filteredReportes.forEach(reporte => {
+                    reportes.forEach(reporte => {
                         var row = document.createElement('tr');
 
-                        ['folio', 'fechaDelSiniestro', 'descripcionDelSiniestro', 'tipo', 'fechaDeDictaminacion', 'descripcionDictamen', 'dictamen', 'ubicacion', 'empleadoAsignado'].forEach(key => {
+                        ['folio', 'fechaSiniestro', 'descripcionSiniestro'].forEach(key => {
                             var cell = document.createElement('td');
                             cell.textContent = reporte[key] || '';
                             row.appendChild(cell);
@@ -202,8 +196,6 @@
                     });
                 })
                 .catch(error => console.error('Error:', error));
-
-
         }
         // Agrega un controlador de eventos click a las filas de la tabla
         document.querySelector('#reports-table tbody').addEventListener('click', function (event) {
@@ -221,14 +213,57 @@
             var label = document.createElement('label');
             label.textContent = 'Folio: ' + folio;
 
-            // Limpia el formulario antes de agregar la nueva etiqueta
+            // Crea un combo box para los empleados
+            var select = document.createElement('select');
+            select.id = 'employee-select';
+
+            // Limpia el formulario antes de agregar la nueva etiqueta y el combo box
             var form = document.querySelector('#report-form');
             form.innerHTML = '';
             form.appendChild(label);
+            form.appendChild(select);
+
+            // Hace una solicitud fetch al endpoint de empleados
+            fetch('http://localhost:8000/empleados')
+                .then(response => response.json())
+                .then(empleados => {
+                    empleados.forEach(empleado => {
+                        var option = document.createElement('option');
+                        option.value = empleado.email; // Asume que cada empleado tiene una propiedad 'email'
+                        option.textContent = empleado.nombre + ' ' + empleado.apellidos; // Asume que cada empleado tiene propiedades 'nombre' y 'apellidos'
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
 
             document.querySelector('#reports-table').style.display = 'none';
             document.querySelector('#form-container').style.display = 'block';
         }
+        document.querySelector('#assign-button').addEventListener('click', function () {
+            var folio = document.querySelector('#report-form label').textContent.split(': ')[1];
+            var email = document.querySelector('#employee-select').value;
+
+            fetch(`http://localhost:8000/reporte/${folio}`, { // Reemplaza esta URL con la URL de tu servidor
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Vuelve a la tabla después de que la solicitud fetch se complete
+                    document.querySelector('#reports-table').style.display = 'block';
+                    document.querySelector('#form-container').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Vuelve a la tabla después de que la solicitud fetch se complete, incluso si ocurre un error
+                    document.querySelector('#reports-table').style.display = 'block';
+                    document.querySelector('#form-container').style.display = 'none';
+                });
+        });
     </script>
 </body>
 
