@@ -19,6 +19,8 @@ from domain.conductor import Conductor
 from dao.empleado_dao import EmpleadoDAO
 from domain.empleado import Empleado
 
+from dao.reporte_dao import ReporteDao
+from domain.reporte import Report
 from domain.imagenSiniestro import Imagen
 
 
@@ -314,16 +316,19 @@ async def update_reporte(reporte_id: str, updated_data: dict):
 
 
 @app.post("/reporte/create",status_code=status.HTTP_201_CREATED)
-async def register_reporte():
-    hola = ReporteDao.generar_string("65961da00027c225290c6c6", "Ulsies", "05/08/2023")
-    print(hola)
+async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: str, desDictamen: str, fechaSiniestro: str, arrayImagenes: list):
+    dao = ReporteDao()
+    folio = dao.generar_Folio(id_Conductor, aliasVehiculo, fechaSiniestro)
+    # Procesar imágenes
+    dao.procesarImagenes(folio, arrayImagenes)
+    print(folio)
     result = 0
     if result == 0:
-        return {"mensaje": "Conductor registrado exitosamente"}
+        return {"mensaje": "Reporte registrado exitosamente"}
     elif result == -2:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar conductor")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
     else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar conductor")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar reporte")
     
 #End points de Empleado
 #End-point para registrar un nuevo empleado
@@ -362,8 +367,9 @@ async def get_empleado_activo_by_id(empleado_id: str):
     if empleado:
         return empleado
     else:
-        return {"mensaje": "No hay empleados disponibles"}
-# Endpoint para modificar un empleado
+        return {"mensaje": "No hay empleado disponibles"}
+
+# Endpoint para modificar y desactivar a un empleado
 @app.put("/empleado/modificar/{empleado_id}", status_code=status.HTTP_200_OK)
 async def update_empleado(empleado_id: str, updated_data: dict):
     dao = EmpleadoDAO()

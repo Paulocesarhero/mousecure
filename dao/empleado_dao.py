@@ -67,7 +67,7 @@ class EmpleadoDAO:
         try:
             data: Collection = self.db.empleados
             # Especificar campos para incluir en los resultados
-            empleados_crudos = list(data.find({"activo": True}, {"_id": 1, "nombre": 1, "apellidoPaterno": 1, "apellidoMaterno": 1}))
+            empleados_crudos = list(data.find({"activo": True}, {"_id": 1, "nombre": 1, "apellidoPaterno": 1, "apellidoMaterno": 1,"rol": 1}))
             if not empleados_crudos:
                 return "No hay empleados activos disponibles."
             empleados = []
