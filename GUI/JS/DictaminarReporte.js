@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const btnAceptar = document.getElementById('btn_Aceptar');
-    const btnCancelar = document.getElementById('btn_Cancelar');
+    const btnAceptar = document.getElementById('btn_Aceptar_Dictamen');
+    const btnCancelar = document.getElementById('btn_Cancelar_Dictamen');
     var folio = getSelectedReportFromCookie();    
     if (folio == null) {
         return;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         btnCancelar.addEventListener('click', function () {
-            alert("¡Cancelado¡ No se preocupe la acción fue cancelada");
+            alert("¡Cancelado¡ No se preocupe la acción fue cancelada");            
         });
     }
 
@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())            
             .then(data => {
                 alert("Reporte dictaminado");
+                window.location.href = 'http://localhost:8080/html/DictaminarReporteLista.html';
             })
             .catch(error => {
                 alert("No se pudo actualizar intentelo mas tarde");                
@@ -79,3 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return null;
     }    
 });
+
+function regresar() {
+    window.location.href = 'http://localhost:8080/html/DictaminarReporteLista.html';        
+}
+
+function cerrar_sesion() {
+    window.location.href = 'http://localhost:8080/';        
+}

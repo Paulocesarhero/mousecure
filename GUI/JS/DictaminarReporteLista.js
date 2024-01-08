@@ -46,4 +46,9 @@ function displayReportes(reportes) {
 function handleItemClick(event) {
     const selectedReportFolio = event.currentTarget.getAttribute("data-folio");
     document.cookie = `selectedReport=${selectedReportFolio}; path=/`;    
+    window.location.href = 'http://localhost:8080/html/DictaminarReporte.html';
+}
+
+function cerrar_sesion() {
+    window.location.href = 'http://localhost:8080/';  
 }
