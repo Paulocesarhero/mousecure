@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+
+    <title>Polizas</title>
+    <style>
+        body,
+
+
+        .button-container {
+            text-align: center;
+        }
+
+        .custom-button {
+            padding: 20px 40px;
+            margin: 10px;
+            font-size: 1.5rem;
+            /* Texto más grande */
+            background-color: #ddd;
+            /* Color neutro */
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            outline: none;
+        }
+
+        .custom-button:hover {
+            transform: scale(1.1);
+            /* Aumenta el tamaño al pasar el mouse */
+            background-color: #ccc;
+            /* Color al pasar el mouse */
+        }
+
+        /* Asegúrate de que los botones no se salgan de la pantalla en dispositivos móviles */
+        @media (max-width: 768px) {
+            .custom-button {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+
+        main {
+            margin-top: 60px;
+            /* Ajusta este valor según la altura de tu navbar */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px" />MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Reportes
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
+                                    weight="32px" />Reportes Sin Asignación</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
+                                    weight="32px" />Ajustes</a></li>
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
+                                    height="32px" weight="32px" />Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px" />
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"
+                                src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />[Nombre de
+                            Usuario]</a></li>
+                    &nbsp;
+                    <li class="sidebar-header">Reportes</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Asignar
+                            reportes</a></li>
+                    <hr>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Polizas</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px" />Mis
+                            Pólizas</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px" />Comprar
+                            Pólizas</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Contactos</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px" />Correo
+                            Electrónico</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px" />Número
+                            de celular</a></li>
+                    <hr>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img
+                                src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px" />Cerrar Sesión</a>
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <main>
+            <div id="form-container" style="display: none;">
+                <form id="report-form">
+                    <!-- Los campos del formulario se agregarán aquí -->
+                </form>
+                <button id="back-button">Regresar</button>
+                <button id="assign-button">Asignar</button>
+            </div>
+            <table id="reports-table">
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Fecha del Siniestro</th>
+                        <th>Descripción del Siniestro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas de la tabla se agregarán aquí -->
+                </tbody>
+                <tbody>
+                    <!-- Las filas de la tabla se agregarán aquí -->
+                </tbody>
+            </table>
+        </main>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTableData();
+        });
+
+        // Agrega un controlador de eventos click al botón de regresar
+        document.querySelector('#back-button').addEventListener('click', function () {
+            document.querySelector('#form-container').style.display = 'none';
+            document.querySelector('#reports-table').style.display = 'table';
+            loadTableData();
+        });
+
+        function loadTableData() {
+            fetch('http://localhost:8000/reportes')
+                .then(response => response.json())
+                .then(reportes => {
+                    var tableBody = document.querySelector('#reports-table tbody');
+
+                    // Limpia la tabla antes de agregar nuevos datos
+                    tableBody.innerHTML = '';
+
+                    reportes.forEach(reporte => {
+                        var row = document.createElement('tr');
+
+                        ['folio', 'fechaSiniestro', 'descripcionSiniestro'].forEach(key => {
+                            var cell = document.createElement('td');
+                            cell.textContent = reporte[key] || '';
+                            row.appendChild(cell);
+                        });
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        // Agrega un controlador de eventos click a las filas de la tabla
+        document.querySelector('#reports-table tbody').addEventListener('click', function (event) {
+            if (event.target.tagName === 'TD') {
+                var rowData = Array.from(event.target.parentNode.children).map(td => td.textContent);
+                showForm(rowData);
+            }
+        });
+
+        function showForm(rowData) {
+            // Asume que el folio es el primer elemento en rowData
+            var folio = rowData[0];
+
+            // Crea una etiqueta para mostrar el folio
+            var label = document.createElement('label');
+            label.textContent = 'Folio: ' + folio;
+
+            // Crea un combo box para los empleados
+            var select = document.createElement('select');
+            select.id = 'employee-select';
+
+            // Limpia el formulario antes de agregar la nueva etiqueta y el combo box
+            var form = document.querySelector('#report-form');
+            form.innerHTML = '';
+            form.appendChild(label);
+            form.appendChild(select);
+
+            // Hace una solicitud fetch al endpoint de empleados
+            fetch('http://localhost:8000/empleados')
+                .then(response => response.json())
+                .then(empleados => {
+                    empleados.forEach(empleado => {
+                        var option = document.createElement('option');
+                        option.value = empleado.email; // Asume que cada empleado tiene una propiedad 'email'
+                        option.textContent = empleado.nombre + ' ' + empleado.apellidos; // Asume que cada empleado tiene propiedades 'nombre' y 'apellidos'
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+
+            document.querySelector('#reports-table').style.display = 'none';
+            document.querySelector('#form-container').style.display = 'block';
+        }
+        document.querySelector('#assign-button').addEventListener('click', function () {
+            var folio = document.querySelector('#report-form label').textContent.split(': ')[1];
+            var email = document.querySelector('#employee-select').value;
+
+            fetch(`http://localhost:8000/reporte/${folio}`, { // Reemplaza esta URL con la URL de tu servidor
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Vuelve a la tabla después de que la solicitud fetch se complete
+                    document.querySelector('#reports-table').style.display = 'block';
+                    document.querySelector('#form-container').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Vuelve a la tabla después de que la solicitud fetch se complete, incluso si ocurre un error
+                    document.querySelector('#reports-table').style.display = 'block';
+                    document.querySelector('#form-container').style.display = 'none';
+                });
+        });
+    </script>
+</body>
+
+</html>
