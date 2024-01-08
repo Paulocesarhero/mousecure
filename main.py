@@ -9,7 +9,7 @@ from starlette import status
 from fastapi.middleware.cors import CORSMiddleware
 
 import security
-from dao.empleado_dao import EmpleadoDao
+from dao.empleado_dao import  EmpleadoDAO
 from dao.reporte_dao import ReporteDao
 from domain.reporte import Report
 from domain.token import Token
@@ -21,11 +21,7 @@ from security.security import get_password_hash, create_access_token
 from dao.conductor_dao import ConductorDao
 from domain.conductor import Conductor
 
-from dao.empleado_dao import EmpleadoDAO
 from domain.empleado import Empleado
-
-from dao.reporte_dao import ReporteDao
-from domain.reporte import Report
 from domain.imagenSiniestro import Imagen
 
 
@@ -200,7 +196,8 @@ async def update_reporte(reporte_id: str, updated_data: dict):
                             detail="Error interno del servidor al actualizar reporte")
 
 
-@app.post("/reporte/create",status_code=status.HTTP_201_CREATED)
+@app.post("/reporte/create", summary="Crear reporte",
+          tags=["Reporte"], status_code=status.HTTP_201_CREATED)
 async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: str, desDictamen: str, fechaSiniestro: str, arrayImagenes: list):
     dao = ReporteDao()
     folio = dao.generar_Folio(id_Conductor, aliasVehiculo, fechaSiniestro)
@@ -214,7 +211,7 @@ async def register_reporte(id_Conductor: str, aliasVehiculo: str, tipoAcidente: 
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Error al registrar reporte")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error desconocido al registrar reporte")
-    
+
 #End points de Empleado
 #End-point para registrar un nuevo empleado
 @app.post("/empleados/registrar", status_code=status.HTTP_201_CREATED)
@@ -236,7 +233,7 @@ async def delete_empleado(empleado_id: str):
         return {"mensaje": "Empleado eliminado exitosamente"}
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Empleado no encontrado")
-    
+
 #End-point para obtener a todos los empleados (ID, Nombre, apelldios y Tipo y si esta activo)
 @app.get("/empleados", status_code=status.HTTP_200_OK)
 async def get_all_empleados():

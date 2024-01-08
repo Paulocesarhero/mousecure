@@ -43,11 +43,16 @@ function submitForm() {
                         // Verificar y almacenar el tipo de usuario en la GUI
                         if (protectedResponse.data.current_user && protectedResponse.data.current_user.tipo) {
                             const userType = protectedResponse.data.current_user.tipo;
-                            localStorage.setItem('userType', userType);
-                            if (userType == 'conductor'){
+                            const idMongo = protectedResponse.data.current_user.id;
+                            localStorage.setItem('idMongo', idMongo);
+                            if (userType == 'conductor') {
                                 window.location.href = 'html/MainUser.html';
-                            }if (userType == 'empleado'){
+                            }
+                            if (userType == 'empleado') {
                                 window.location.href = 'html/MainAdmin.html';
+                            }
+                            if (userType == 'ajustador') {
+                                window.location.href = 'html/DictaminarReporteLista.html';
                             }
                         }
 

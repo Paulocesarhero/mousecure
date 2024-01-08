@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+
+import security
 from domain.empleado import Empleado
 from connection.mongo_conector import Conector
 from pymongo.collection import Collection
@@ -20,18 +22,18 @@ class EmpleadoDAO:
         except ConnectionError as e:
             logging.exception(f"Error al conectar a la base de datos: {e}")
 
-
-
-    def register_empleado(self, new_Empleado: Empleado):
+    def register_empleado(self, new_empleado: Empleado):
         try:
             data: Collection = self.db.empleados
-            empleado_dict = new_Empleado.dict(exclude={"id"})
+            hashed_password = security.security.get_password_hash(new_empleado.password)
+            new_empleado.password = hashed_password
+            empleado_dict = new_empleado.model_dump()
+
             data.insert_one(empleado_dict)
             return 0
         except Exception as e:
-            logging.exception(f"Error al registrar Empleado en la base de datos: {e}")
+            logging.exception(f"Error al registrar empleado en la base de datos: {e}")
             return -2
-
 
     def update_empleado(self, empleado_id: str, updated_data: dict) -> int:
         try:
