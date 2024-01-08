@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+    <link rel="stylesheet" href="../CSS/CuadroDialogo.css">
+    <link rel="stylesheet" href="../CSS/ActualizarConductor.css">
+    <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/ActualizarConductor.js"></script>
+
+    <title>Mousecure</title>
+    <script>
+
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../Resources/Icons/Mousecure - LT.png" height="32px" weight="32px" />MouSecure
+            </div>
+
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Reportes
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis reportes</a></li>
+                        <li><a href="../html/ReportarSiniestro.html"><img
+                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                    weight="32px" />Reportar Siniestros</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Pólizas
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
+                                    weight="32px" />Mis Pólizas</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
+                                    weight="32px" />Comprar Pólizas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <div class="imagen-contenedor">
+                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
+                                height="16px" weight="16px">
+                        </div>
+                        Contactos
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
+                                    weight="32px" />Correo Electrónico</a></li>
+                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
+                                    weight="32px" />Número de celular</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a tabindex="0">
+                        <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
+                    </a>
+                    <ul class="dropdown-content">
+                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
+                                    weight="32px" />Ajustes</a></li>
+                        <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
+                                    height="32px" weight="32px" />Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-hamburguesa" tabindex="0">
+                <img src="../Resources/Icons/HMenu - LT.png" height="35px" weight="35px" />
+            </div>
+
+            <div id="sidebar" class="sidebar">
+                <ul class="sidebar-nav-links">
+                    <li><a href="#" class="sidebar-header-User-Icon" tabindex="-1"><img id="usuario_Option_SideBar"
+                                src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />[Nombre de
+                            Usuario]</a></li>
+                    &nbsp;
+                    <li class="sidebar-header">Reportes</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportesUsuario - LT.png" height="32px" weight="32px" />Mis
+                            reportes</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
+                                weight="32px" />Reportar Siniestros</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Polizas</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasUsuario - LT.png" height="32px" weight="32px" />Mis
+                            Pólizas</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/PolizasComprar - LT.png" height="32px" weight="32px" />Comprar
+                            Pólizas</a></li>
+                    <hr>
+                    &nbsp;
+                    <li class="sidebar-header">Contactos</li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoCorreo - LT.png" height="32px" weight="32px" />Correo
+                            Electrónico</a></li>
+                    <hr>
+                    <li class="sidebar-options"><a href="#" tabindex="-1"><img
+                                src="../Resources/Icons/ContactoTelefono - LT.png" height="32px" weight="32px" />Número
+                            de celular</a></li>
+                    <hr>
+                    &nbsp;
+                    <hr>
+                    <li class="sidebar-options"><a id="logOut_SideBar" tabindex="-1"><img
+                                src="../Resources/Icons/LogOut - LT.png" height="32px" weight="32px" />Cerrar Sesión</a>
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="titulo_Pagina">
+            Actualizar Información Personal
+        </div>
+        <div id="estructura_Contenido">
+            <form id="formulario_Actualizar_Conductor" method="put">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br>
+
+                <label for="apellidoPaterno">Apellido Paterno:</label>
+                <input type="text" id="apellidoPaterno" name="apellidoPaterno" required><br>
+
+                <label for="apellidoMaterno">Apellido Materno:</label>
+                <input type="text" id="apellidoMaterno" name="apellidoMaterno" required><br>
+
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required><br>
+
+                <label for="numeroLicencia">Número de Licencia:</label>
+                <input type="text" id="numeroLicencia" name="numeroLicencia" required><br>
+
+                <label for="numeroTelefono">Número de Teléfono:</label>
+                <input type="tel" id="numeroTelefono" name="numeroTelefono" required><br>
+
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" readonly><br>
+
+                <section id="contenedor_Botones">
+                    <button id="btn_Aceptar" class="btn-Aceptar-able" disabled tabindex="0"><img
+                            src="../Resources/Icons/Aceptar - LT.png" height="20px" weight="20px" /></button>
+                    <button id="btn_Cancelar" tabindex="0"><img src="../Resources/Icons/Cancelar - LT.png" height="20px"
+                            weight="20px" /></button>
+                </section>
+            </form>
+        </div>
+
+
+        <!-- Formato de cuadro de dialogos -->
+        <div class="cuadro-Dialogo-Modal">
+            <div class="cuadro-Dialogo operacion" id="enviar_cambios">
+                <!-- Rempleza el icono por el que gustes -->
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>Atención</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>¿Está seguro de realizar los siguientes cambios?</p>
+                </div>
+                <!-- Agrega los botones que gustes -->
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="aceptar_Enviar" class="confirmar-Accion">Aceptar</button>
+                    <button id="cancelar_Enviar" class="cancelar-Accion">Cancelar</button>
+                </div>
+            </div>
+
+            <div class="cuadro-Dialogo-Modal">
+                <div class="cuadro-Dialogo operacion" id="cancelar_update">
+                    <!-- Rempleza el icono por el que gustes -->
+                    <div id="icono_Cuadro_Dialogo">
+                        <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                    </div>
+                    <div id="encabezado_Cuadro_Dialogo">
+                        <h2>Atención</h2>
+                    </div>
+                    <div id="contenido_Cuadro_Dialogo">
+                        <p>¿Desea cancelar esta acción?</p>
+                    </div>
+                    <!-- Agrega los botones que gustes -->
+                    <div id="botones_Cuadro_Dialogo">
+                        <button id="aceptar_Cancelar" class="confirmar-Accion">Aceptar</button>
+                        <button id="cancelar_Cancelar" class="cancelar-Accion">Cancelar</button>
+                    </div>
+                </div>          
+
+            <div class="cuadro-Dialogo operacion" id="logOut">
+                <!-- Rempleza el icono por el que gustes -->
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>¿Desea cerrar sesión?</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>Saldra de su sesión actual.</p>
+                </div>
+                <!-- Agrega los botones que gustes -->
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
+                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

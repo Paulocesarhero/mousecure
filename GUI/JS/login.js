@@ -11,7 +11,7 @@ function submitForm() {
     postData.append('client_id', '');
     postData.append('client_secret', '');
 
-    axios.post('http://localhost:8000/token', postData, {
+    axios.post(url, postData, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'accept': 'application/json'
@@ -22,8 +22,11 @@ function submitForm() {
 
             // Verificar el contenido de la respuesta y actuar en consecuencia
             if (response.data.access_token) {
-                // Acceso concedido
-                alert('Acceso concedido');
+                const accessToken = response.data.access_token;
+
+            // Guardar el token en localStorage
+                localStorage.setItem('accessToken', accessToken);
+                window.location.href = 'html/MainUser.html';
             } else {
                 // La respuesta no contiene el token esperado
                 alert('Respuesta del servidor inesperada');

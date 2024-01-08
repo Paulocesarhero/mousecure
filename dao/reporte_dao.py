@@ -30,20 +30,7 @@ class ReporteDao:
             return 0
         except Exception as e:
             logging.exception(f"Error al insertar usuario en la base de datos: {e}")
-            return -2
-        
-    def get_all_reportes_02(self):
-        try:
-            data: Collection = self.db.reporte
-            print(data)
-            result = data.find({}, {"fechaDelSiniestro": 1, "dictamen": 1, "_id": 1})
-            print(result)
-            reportes = [Report(**reporte) for reporte in result]
-            print(reportes)
-            return reportes
-        except Exception as e:
-            logging.exception(f"Error al recuperar todos los reportes: {e}")
-            return None
+            return -2        
         
     def get_all_reportes(self):
         try:
@@ -107,3 +94,46 @@ class ReporteDao:
         # Combinar todas las partes para formar el nuevo string
         nuevo_string = id_parte + aliasAuto_parte + hora_parte + fecha_numeros
         return nuevo_string
+    
+
+    def get_reportes_by_email(self, email: str):
+        try:
+            data: Collection = self.db.reporte
+            reportes = list(data.find({"empleadoAsignado.email": email}))
+            return [Report(**reporte) for reporte in reportes]
+        except Exception as e:
+            logging.exception(f"Error al obtener reportes por correo de empleado asignado: {e}")
+            return None
+        
+
+    def get_reporte_by_folio(self, folio: str):
+        try:
+            data: Collection = self.db.reporte
+            reporte = data.find_one({"folio": folio})
+            if reporte is not None:
+                return Report(**reporte)
+            else:
+                return None
+        except Exception as e:
+            logging.exception(f"Error al obtener reporte por folio de la base de datos: {e}")
+            return None
+
+        
+    def update_reporte_by_folio(self, folio: str, updated_data: dict):
+        try:
+            print(folio)
+            print(updated_data)
+            data: Collection = self.db.reporte
+            print(data)
+            existing_data = data.find_one({"folio": folio})
+            print(existing_data)
+            if existing_data is None:
+                return -1
+            result = data.update_one({"folio": folio}, {"$set": updated_data})
+            if result.modified_count > 0:
+                return 0
+            else:
+                return 1
+        except Exception as e:
+            logging.exception(f"Error al actualizar reporte por folio en la base de datos: {e}")
+            return -2
