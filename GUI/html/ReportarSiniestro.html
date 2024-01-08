@@ -6,48 +6,12 @@
     <title>Mousecure</title>
     <link rel="icon" type="image/png" href="../Resources/Icons/Mousecure - LT.png">
 
-    <!--Script para determinar quien es quien-->
-    <script>
-    let scriptDocumentsSpecific = [
-        '../JS/ReportarSiniestro.js'//Remplaza por el documento que necesitas, o agrega el numero de documentos que necesitas
-    ];
-
-    let styleDocumentsSpecific = [
-        '../CSS/ReportarSiniestro.css'//Remplaza por el documento que necesitas, o agrega el numero de documentos que necesitas
-    ];
-    //Coloca quien debe de tener acceso
-    let rolDoc = "Conductor"
-
-    let inicioSesion = "";
-    let rol = "";
-
-    let tipoAlerta = "";
-
-    //Solo es tem este
-    function crearCookie(nombre, valor, diasExpiracion) {
-        var fecha = new Date();
-        fecha.setTime(fecha.getTime() + (diasExpiracion * 24 * 60 * 60 * 1000));
-        var expira = "expires=" + fecha.toUTCString();
-        document.cookie = nombre + "=" + valor + ";" + expira + ";path=/";
-    }
-
-    function leerCookie(nombre) {
-        var lista = document.cookie.split(';');
-        for(var i = 0; i < lista.length; i++) {
-            var cookie = lista[i];
-            var partes = cookie.split('=');
-            if(partes[0].trim() === nombre) {
-                return partes[1];
-            }
-        }
-        return null;
-    }
-    
-    //Solo es temp
-    crearCookie("inicioSesion","true",10)
-    crearCookie("rol","Conductor",10)
-    </script>
-    <script type="text/javascript" src="../JS/AuthHandler.js"></script>
+    <link rel="stylesheet" href="../CSS/NavBarStyle.css">
+    <link rel="stylesheet" href="../CSS/CuadroDialogo.css">
+    <link rel="stylesheet" href="../CSS/ReportarSiniestro.css">
+    <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
+    <script type="text/javascript" src="../JS/ReportarSiniestro.js"></script>
 </head>
 <body>
 
@@ -95,7 +59,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a tabindex="0">
+                    <a href="../html/MainUser.html" tabindex="0">
                         <img id="usuario_Option"src="../Resources/Icons/User - LT.png" height="35px" weight="35px"/>
                     </a>
                     <ul class="dropdown-content">
