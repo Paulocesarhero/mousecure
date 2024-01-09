@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../CSS/ActualizarConductor.css">
     <link rel="stylesheet" href="../CSS/DictaminarReporte.css">
     <script type="text/javascript" src="../JS/NavBarFunctionality.js"></script>
-    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>    
+    <script type="text/javascript" src="../JS/CuadroDialogoFunctionality.js"></script>
     <script src="../JS/DictaminarReporteLista.js"></script>
 
     <title>Mousecure</title>
@@ -30,57 +30,9 @@
             <ul class="nav-links">
                 <li class="dropdown">
                     <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Reportes
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
-                                    weight="32px" />Mis reportes</a></li>
-                        <li><a href="../html/ReportarSiniestro.html"><img
-                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
-                                    weight="32px" />Reportar Siniestros</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Pólizas
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
-                                    weight="32px" />Mis Pólizas</a></li>
-                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
-                                    weight="32px" />Comprar Pólizas</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Contactos
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
-                                    weight="32px" />Correo Electrónico</a></li>
-                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
-                                    weight="32px" />Número de celular</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
                         <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
                     </a>
                     <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
-                                    weight="32px" />Ajustes</a></li>
                         <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
                                     height="32px" weight="32px" />Cerrar Sesión</a></li>
                     </ul>
@@ -169,24 +121,22 @@
                 </div>
             </div>
 
-                <div class="cuadro-Dialogo operacion" id="logOut">
-                    <!-- Rempleza el icono por el que gustes -->
-                    <div id="icono_Cuadro_Dialogo">
-                        <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
-                    </div>
-                    <div id="encabezado_Cuadro_Dialogo">
-                        <h2>¿Desea cerrar sesión?</h2>
-                    </div>
-                    <div id="contenido_Cuadro_Dialogo">
-                        <p>Saldra de su sesión actual.</p>
-                    </div>
-                    <!-- Agrega los botones que gustes -->
-                    <div id="botones_Cuadro_Dialogo">
-                        <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
-                        <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
-                    </div>
+            <div class="cuadro-Dialogo operacion" id="logOut">
+                <div id="icono_Cuadro_Dialogo">
+                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
+                </div>
+                <div id="encabezado_Cuadro_Dialogo">
+                    <h2>¿Desea cerrar sesión?</h2>
+                </div>
+                <div id="contenido_Cuadro_Dialogo">
+                    <p>Saldra de su sesión actual.</p>
+                </div>
+                <div id="botones_Cuadro_Dialogo">
+                    <button id="cerrar_sesion" onclick="cerrar_sesion()">Aceptar</button>
+                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
                 </div>
             </div>
+        </div>
     </main>
 </body>
 

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getReportes() {
-    const emailInput = "ana@example.com";
+    const emailInput = "ulisesram19@gmail.com";
 
     fetch(`http://localhost:8000/reportes/${emailInput}`)
         .then(response => {
@@ -32,7 +32,7 @@ function displayReportes(reportes) {
     reportes.forEach(report => {
         const listItem = document.createElement("li");
         const reportContent = document.createElement("span");
-        reportContent.textContent = `Folio: ${report.folio} Dictamen: ${report.dictamen} Fecha del siniestro: ${report.fechaDelSiniestro}`;
+        reportContent.textContent = `Folio: ${report.folio} Fecha del siniestro: ${report.fechaDelSiniestro}`;
         listItem.appendChild(reportContent);
         listItem.setAttribute("id", `report_${report.folio}`);
         listItem.setAttribute("data-folio", report.folio);
@@ -46,4 +46,9 @@ function displayReportes(reportes) {
 function handleItemClick(event) {
     const selectedReportFolio = event.currentTarget.getAttribute("data-folio");
     document.cookie = `selectedReport=${selectedReportFolio}; path=/`;    
+    window.location.href = 'http://localhost:8080/html/DictaminarReporte.html';
+}
+
+function cerrar_sesion() {
+    window.location.href = 'http://localhost:8080/';  
 }

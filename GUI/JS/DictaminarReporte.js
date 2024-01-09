@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const btnAceptar = document.getElementById('btn_Aceptar');
-    const btnCancelar = document.getElementById('btn_Cancelar');
+    const btnAceptar = document.getElementById('btn_Aceptar_Dictamen');
+    const btnCancelar = document.getElementById('btn_Cancelar_Dictamen');
     var folio = getSelectedReportFromCookie();    
     if (folio == null) {
         return;
@@ -79,3 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return null;
     }    
 });
+
+function cerrar_sesion() {
+    window.location.href = 'http://localhost:8080/';  
+}
+
+function regresar() {
+    window.location.href = 'http://localhost:8080/html/DictaminarReporteLista.html';  
+}

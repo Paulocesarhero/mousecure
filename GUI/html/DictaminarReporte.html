@@ -29,57 +29,9 @@
             <ul class="nav-links">
                 <li class="dropdown">
                     <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Reportes
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/ReportesUsuario - LT.png" height="32px"
-                                    weight="32px" />Mis reportes</a></li>
-                        <li><a href="../html/ReportarSiniestro.html"><img
-                                    src="../Resources/Icons/ReportarSiniestro - LT.png" height="32px"
-                                    weight="32px" />Reportar Siniestros</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Pólizas
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/PolizasUsuario - LT.png" height="32px"
-                                    weight="32px" />Mis Pólizas</a></li>
-                        <li><a href="#"><img src="../Resources/Icons/PolizasComprar - LT.png" height="32px"
-                                    weight="32px" />Comprar Pólizas</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
-                        <div class="imagen-contenedor">
-                            <img id="imagenDinamica" src="../Resources/Icons/FlechaAbj - LT.png" alt="Imagen"
-                                height="16px" weight="16px">
-                        </div>
-                        Contactos
-                    </a>
-                    <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/ContactoCorreo - LT.png" height="32px"
-                                    weight="32px" />Correo Electrónico</a></li>
-                        <li><a href="#"><img src="../Resources/Icons/ContactoTelefono - LT.png" height="32px"
-                                    weight="32px" />Número de celular</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a tabindex="0">
                         <img id="usuario_Option" src="../Resources/Icons/User - LT.png" height="35px" weight="35px" />
                     </a>
                     <ul class="dropdown-content">
-                        <li><a href="#"><img src="../Resources/Icons/Ajustes - LT.png" height="32px"
-                                    weight="32px" />Ajustes</a></li>
                         <li><a tabindex="0" id="logOut_NavBar"><img src="../Resources/Icons/LogOut - LT.png"
                                     height="32px" weight="32px" />Cerrar Sesión</a></li>
                     </ul>
@@ -143,16 +95,18 @@
         <div id="titulo_Pagina">
             Dictamine el reporte
         </div>
-        <div id="estructura_Contenido">
+        <button id="btn_Regresar" src="../Resources/Icons/FlechaIzq - LT.png" onclick="regresar()">Regresar</button>
+        <div id="estructura_Contenido">            
             <form id="formulario_Actualizar_Conductor" method="put">
                 <label for="folio">Folio:</label>
                 <input type="text" id="folio" name="folio" readonly><br>
 
                 <label for="fechaDelSiniestro">Fecha del siniestro:</label>
-                <input type="date" id="fechaDelSiniestro" name="fechaDelSiniestro" readonly><br>
+                <input type="text" id="fechaDelSiniestro" name="fechaDelSiniestro" readonly><br>
 
                 <label for="ubicacion">Ubicación:</label>
                 <input type="text" id="ubicacion" name="ubicacion" readonly><br>
+          
 
                 <label for="tipo">Tipo:</label>
                 <input type="text" id="tipo" name="tipo" readonly><br>
@@ -167,9 +121,9 @@
                 <input type="text" id="descripcionDictamen" name="descripcionDictamen" required><br>
 
                 <section id="contenedor_Botones">
-                    <button id="btn_Aceptar" class="btn-Aceptar-able" disabled tabindex="0"><img
+                    <button id="btn_Aceptar_Dictamen" class="btn-Aceptar-able" disabled tabindex="0"><img
                             src="../Resources/Icons/Aceptar - LT.png" height="20px" weight="20px" /></button>
-                    <button id="btn_Cancelar" tabindex="0"><img src="../Resources/Icons/Cancelar - LT.png" height="20px"
+                    <button id="btn_Cancelar_Dictamen" tabindex="0"><img src="../Resources/Icons/Cancelar - LT.png" height="20px"
                             weight="20px" /></button>
                 </section>
             </form>
@@ -194,44 +148,23 @@
                     <button id="aceptar_Enviar" class="confirmar-Accion">Aceptar</button>
                     <button id="cancelar_Enviar" class="cancelar-Accion">Cancelar</button>
                 </div>
-            </div>
+            </div>     
 
-            <div class="cuadro-Dialogo-Modal">
-                <div class="cuadro-Dialogo operacion" id="cancelar_update">
-                    <!-- Rempleza el icono por el que gustes -->
+                <div class="cuadro-Dialogo operacion" id="logOut">
                     <div id="icono_Cuadro_Dialogo">
                         <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
                     </div>
                     <div id="encabezado_Cuadro_Dialogo">
-                        <h2>Atención</h2>
+                        <h2>¿Desea cerrar sesión?</h2>
                     </div>
                     <div id="contenido_Cuadro_Dialogo">
-                        <p>¿Desea cancelar esta acción?</p>
+                        <p>Saldra de su sesión actual.</p>
                     </div>
-                    <!-- Agrega los botones que gustes -->
                     <div id="botones_Cuadro_Dialogo">
-                        <button id="aceptar_Cancelar" class="confirmar-Accion">Aceptar</button>
-                        <button id="cancelar_Cancelar" class="cancelar-Accion">Cancelar</button>
+                        <button id="cerrar_sesion" onclick="cerrar_sesion()">Aceptar</button>
+                        <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
                     </div>
-                </div>          
-
-            <div class="cuadro-Dialogo operacion" id="logOut">
-                <!-- Rempleza el icono por el que gustes -->
-                <div id="icono_Cuadro_Dialogo">
-                    <img src="../Resources/Icons/OperacionAdvertencia- Color.png" height="100%" width="100%">
                 </div>
-                <div id="encabezado_Cuadro_Dialogo">
-                    <h2>¿Desea cerrar sesión?</h2>
-                </div>
-                <div id="contenido_Cuadro_Dialogo">
-                    <p>Saldra de su sesión actual.</p>
-                </div>
-                <!-- Agrega los botones que gustes -->
-                <div id="botones_Cuadro_Dialogo">
-                    <button id="aceptar_Operacion" class="confirmar-Accion">Aceptar</button>
-                    <button id="cancelar_Operacion" class="cancelar-Accion">Cancelar</button>
-                </div>
-            </div>
         </div>
     </main>
 </body>

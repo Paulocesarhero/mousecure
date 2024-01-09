@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const correoEmpleados = [
         "ulisesram19@gmail.com",
-        "ulises_ram19@hotmial.com",
-        "LeoRam19@gmail.com"
     ];
 
     var coordenadas = ""
@@ -244,7 +242,8 @@ document.addEventListener('DOMContentLoaded', function() {
             tipo: document.getElementById('tipo_Siniestro_Combobox').value,
             vehiculo: document.getElementById('vehiculo_Comboxbox').value,
             ubicacion: coordenadas,
-            empleadoAsignado: obtenerCorreoAleatorio()
+            empleadoAsignado: obtenerCorreoAleatorio(),
+            folio: generarCodigoAleatorio()
         };
         
         // Envía los datos a la API para crear el reporte
@@ -321,7 +320,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+    function generarCodigoAleatorio() {
+        const caracteresPermitidos = 'abcdefghijklmnopqrstuvwxyz123456789';
+        let codigoAleatorio = '';
+      
+        for (let i = 0; i < 6; i++) {
+          const indiceAleatorio = Math.floor(Math.random() * caracteresPermitidos.length);
+          codigoAleatorio += caracteresPermitidos.charAt(indiceAleatorio);
+        }
+      
+        return codigoAleatorio;
+      }
+      
 
 
 
